@@ -3,6 +3,6 @@
 <template>
   <div>
     index
-    <Test />
+    <RouterView />
   </div>
 </template>

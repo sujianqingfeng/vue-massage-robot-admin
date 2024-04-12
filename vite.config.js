@@ -1,3 +1,4 @@
+import path from 'path'
 import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -8,6 +9,11 @@ import { defineConfig } from 'vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '~/': `${path.resolve(__dirname, 'src')}/`
+    }
+  },
   plugins: [
     Vue(),
     UnoCSS(),
@@ -23,7 +29,8 @@ export default defineConfig({
       imports: ['vue', 'vue-router', '@vueuse/core'],
       eslintrc: {
         enabled: true
-      }
+      },
+      dirs: ['./src/composables']
     }),
     VueDevTools()
   ]

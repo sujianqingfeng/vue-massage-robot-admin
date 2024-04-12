@@ -1,17 +1,20 @@
-import { ElDialog } from 'element-plus'
+import { render, h } from 'vue'
+import Dialog from '~/components/Dialog.vue'
 
 export const useTemplateDialog = () => {
   const visible = ref(true)
   const loading = ref(false)
 
-  const containerEl = document.createElement('div')
-  document.body.appendChild(containerEl)
+  let mountNode = null
 
-  onUnmounted(() => {
-    if (document.body.contains(containerEl)) {
-      document.body.removeChild(containerEl)
+  const unmounted = () => {
+    if (mountNode) {
+      document.body.removeChild(mountNode)
+      mountNode = null
     }
-  })
+  }
+
+  onUnmounted(unmounted)
 
   const show = async (options) => {
     visible.value = true
@@ -20,21 +23,12 @@ export const useTemplateDialog = () => {
     const { template, showParams, onConfirm, onCancel, ...rest } = options
     const t = await template()
 
-    const dialog = createVNode(ElDialog, {})
-    // render(dialog, mountNode)
-
     let slotVNode = null
-
-    const el = document.createElement('div')
-    el.className = 'custom-container'
-    containerEl.appendChild(el)
 
     const hide = () => {
       visible.value = false
 
-      containerEl.childNodes.forEach((item) => {
-        containerEl.removeChild(item)
-      })
+      unmounted()
     }
 
     const stopLoading = () => {
@@ -45,77 +39,77 @@ export const useTemplateDialog = () => {
       loading.value = true
     }
 
-    new Dialog({
-      setup: () => {
+    const getDialogContext = () => {
+      const componentInstance = slotVNode.component
+      const dialogContext = {
+        hide,
+        instance: componentInstance,
+        startLoading,
+        stopLoading
+      }
+      return dialogContext
+    }
+
+    if (mountNode) {
+      unmounted()
+    }
+    mountNode = document.createElement('div')
+    document.body.appendChild(mountNode)
+
+    const dialog = h({
+      setup() {
         onMounted(() => {
           nextTick(() => {
-            slotVNode.componentInstance &&
-              slotVNode.componentInstance.show(showParams)
+            const exposed = slotVNode.component.exposed
+            const { show } = exposed
+            show && show(showParams)
           })
         })
 
-        return () => {
-          return h(
-            BasicDialog,
+        return () =>
+          h(
+            Dialog,
             {
-              props: {
-                visible: visible.value,
-                loading: loading.value
+              modelValue: visible.value,
+              loading: loading.value,
+              ...rest,
+              onCancel: () => {
+                const dialogContext = getDialogContext()
+                onCancel && onCancel(dialogContext)
               },
-              attrs: {
-                ...rest,
-                modalAppendToBody: false
-              },
-              on: {
-                'update:visible': () => {
-                  hide()
-                },
-                confirm: () => {
-                  const componentInstance = slotVNode.componentInstance
-                  const { onConfirm: _onConfirm } = componentInstance
-                  const defaultResult = {
-                    hide,
-                    instance: componentInstance,
-                    startLoading,
-                    stopLoading
-                  }
+              onConfirm: () => {
+                const dialogContext = getDialogContext()
+                const { onConfirm: _onConfirm } = dialogContext.instance.exposed
 
-                  if (_onConfirm) {
-                    const r = _onConfirm()
-                    if (typeof r === 'undefined') {
-                      onConfirm && onConfirm(defaultResult)
-                    } else if (r && r.then) {
-                      r.then((result) => {
-                        onConfirm &&
-                          onConfirm({
-                            ...defaultResult,
-                            result
-                          })
+                const executeOnConfirm = (result) => {
+                  onConfirm && onConfirm(result)
+                }
+
+                if (_onConfirm) {
+                  const r = _onConfirm()
+                  if (typeof r === 'undefined') {
+                    executeOnConfirm(dialogContext)
+                  } else if (r && r.then) {
+                    r.then((result) => {
+                      executeOnConfirm({
+                        ...dialogContext,
+                        result
                       })
-                    } else {
-                      onConfirm && onConfirm(defaultResult)
-                    }
-                  } else {
-                    onConfirm && onConfirm(defaultResult)
-                  }
-                },
-                cancel: () => {
-                  const componentInstance = slotVNode.componentInstance
-                  onCancel &&
-                    onCancel({
-                      hide,
-                      instance: componentInstance,
-                      startLoading,
-                      stopLoading
                     })
+                  } else {
+                    executeOnConfirm(dialogContext)
+                  }
+                } else {
+                  executeOnConfirm(dialogContext)
                 }
               }
             },
-            [(slotVNode = h(t.default))]
+            () => [(slotVNode = h(t.default))]
           )
-        }
       }
-    }).$mount(el)
+    })
+
+    render(dialog, mountNode)
   }
 
   return {

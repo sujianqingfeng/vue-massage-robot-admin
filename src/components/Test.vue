@@ -1,5 +1,15 @@
 <script setup>
 const a = computed(() => 1)
+
+const { show } = useTemplateDialog()
+const test = () => {
+  show({
+    template: () => import('./Temp.vue'),
+    onConfirm: (context) => {
+      context.hide()
+    }
+  })
+}
 </script>
 
 <template>
@@ -8,6 +18,6 @@ const a = computed(() => 1)
       {{ a }}
     </div>
 
-    <el-button>ffff</el-button>
+    <el-button @click="test">ffff</el-button>
   </div>
 </template>
