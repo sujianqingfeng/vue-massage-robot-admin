@@ -12,7 +12,8 @@
     "@sujian/request": "^2.0.7",
     "element-plus": "^2.6.3",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue-use": "^0.2.0"
   },
   "devDependencies": {
     "@sujian/eslint-config": "^1.0.4",
