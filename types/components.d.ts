@@ -7,9 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    DateRange: typeof import('./../src/components/DateRange.vue')['default']
     Dialog: typeof import('./../src/components/Dialog.vue')['default']
+    EChartsWrapper: typeof import('./../src/components/EChartsWrapper.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
+    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
@@ -18,7 +21,10 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Temp: typeof import('./../src/components/Temp.vue')['default']

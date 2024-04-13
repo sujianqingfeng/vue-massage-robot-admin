@@ -1,5 +1,8 @@
 <script setup>
 import Amounts from './components/Amounts.vue'
+import Devices from './components/Devices/index.vue'
+import Orders from './components/Orders.vue'
+import Shops from './components/Shops.vue'
 </script>
 
 <template>
@@ -8,9 +11,15 @@ import Amounts from './components/Amounts.vue'
       <div class="">
         <Amounts />
       </div>
-      <div class="bg-white">f</div>
-      <div class="bg-white">ff</div>
+      <div class="bg-white rounded-1">
+        <Devices />
+      </div>
+      <div class="bg-white rounded-1 p-6">
+        <Orders />
+      </div>
     </div>
-    <div class="bg-white w-50 h-full">fff</div>
+    <div class="bg-white w-100 h-full rounded-1">
+      <Shops />
+    </div>
   </div>
 </template>
