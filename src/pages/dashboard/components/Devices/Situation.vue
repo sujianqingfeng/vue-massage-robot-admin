@@ -58,7 +58,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <div>
-    <EChartsWrapper ref="eChartRef" class="w-full h-60" />
+  <div class="h-90%">
+    <EChartsWrapper ref="eChartRef" class="w-full h-full" />
   </div>
 </template>

@@ -40,6 +40,9 @@ devDependencies:
   '@unocss/preset-icons':
     specifier: ^0.59.2
     version: 0.59.2
+  '@unocss/transformer-directives':
+    specifier: ^0.59.2
+    version: 0.59.2
   '@vitejs/plugin-vue':
     specifier: ^5.0.4
     version: 5.0.4(vite@5.2.8)(vue@3.4.21)
@@ -1393,7 +1396,15 @@ packages:
     resolution: {integrity: sha512-PDGAcyBFXqB7GHhKGRfajoiepL4A9SM4pyulMMT328H0uHEbwrB+niCVE/hubP2rCOGrrq7JH0nR4ftaC6m8Ow==}
     engines: {node: '>=14'}
     dependencies:
-      '@unocss/core': 0.59.0
+      '@unocss/core': 0.59.2
+      magic-string: 0.30.9
+    dev: true
+
+  /@unocss/rule-utils@0.59.2:
+    resolution: {integrity: sha512-2F1Q1pCfeG65GxPEhGQDZXXoZk38fX4o5LOYf35XkknhjQmkaeK76szVYXLDoyK30n9EiwXqoc0MdKrGjeCMUA==}
+    engines: {node: '>=14'}
+    dependencies:
+      '@unocss/core': 0.59.2
       magic-string: 0.30.9
     dev: true
 
@@ -1429,6 +1440,14 @@ packages:
     dependencies:
       '@unocss/core': 0.59.0
       '@unocss/rule-utils': 0.59.0
+      css-tree: 2.3.1
+    dev: true
+
+  /@unocss/transformer-directives@0.59.2:
+    resolution: {integrity: sha512-FiLcBtwUIUNFpE2SxeUeslJGShHimOJyk30+m2BP+Af7QsxcamWb8/w7YKRMz5MAmE6ZnzAzx/ZAdrK540ho0A==}
+    dependencies:
+      '@unocss/core': 0.59.2
+      '@unocss/rule-utils': 0.59.2
       css-tree: 2.3.1
     dev: true
 

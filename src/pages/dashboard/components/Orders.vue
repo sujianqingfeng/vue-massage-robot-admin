@@ -113,7 +113,7 @@ onMounted(() => {
 <template>
   <div class="text-4.5 color-#0D1926 font-bold leading-5.27">订单趋势</div>
 
-  <div>
-    <div ref="eChartRef" class="w-full h-60"></div>
+  <div class="h-full">
+    <div ref="eChartRef" class="w-full h-full"></div>
   </div>
 </template>

@@ -73,10 +73,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-60 p-6 border-r">
+  <div class="w-60 p-6 border-r h-full">
     <div class="color-#0D1926 text-4.5 leading-5.27 font-bold">设备总数</div>
     <div class="flex justify-center items-center">
-      <EChartsWrapper ref="eChartRef" class="w-24 h-60" />
+      <EChartsWrapper ref="eChartRef" class="w-24 h-full" />
     </div>
   </div>
 </template>

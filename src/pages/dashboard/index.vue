@@ -11,10 +11,10 @@ import Shops from './components/Shops.vue'
       <div class="">
         <Amounts />
       </div>
-      <div class="bg-white rounded-1">
+      <div class="bg-white rounded-1 h-88 grow-1">
         <Devices />
       </div>
-      <div class="bg-white rounded-1 p-6">
+      <div class="bg-white rounded-1 p-6 h-88 grow-1">
         <Orders />
       </div>
     </div>

@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="px-4 py-6.5">
+  <div class="px-4 py-6.5 flex flex-col h-full">
     <div
       class="flex justify-between items-center color-#1E1E1E text-4 font-bold leading-4.69"
     >
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="bg-#F1F5F8 px-2.5 py-5 rounded-1">
+    <div class="bg-#F1F5F8 px-2.5 py-5 rounded-1 flex-auto overflow-auto">
       <div
         class="flex items-center bg-white rounded-12.5 text-2 h-12 mb-3.7 color-#144675"
       >
