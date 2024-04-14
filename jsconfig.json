@@ -8,6 +8,8 @@
     "resolveJsonModule": true,
     "strict": true,
     "skipLibCheck": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"],

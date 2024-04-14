@@ -1,7 +1,7 @@
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 import presetIcons from '@unocss/preset-icons'
 import transformerDirectives from '@unocss/transformer-directives'
-import { defineConfig, presetAttributify, presetUno } from 'unocss'
+import { defineConfig, presetUno } from 'unocss'
 
 export default defineConfig({
   transformers: [
@@ -10,7 +10,6 @@ export default defineConfig({
     })
   ],
   presets: [
-    presetAttributify({}),
     presetUno(),
     presetIcons({
       collections: {

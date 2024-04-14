@@ -1,5 +1,6 @@
 import path from 'path'
 import Vue from '@vitejs/plugin-vue'
+import VueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
@@ -15,8 +16,10 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
+    VueJsx(),
     UnoCSS(),
     Components({
+      extensions: ['vue', 'jsx'],
       dts: './types/components.d.ts',
       resolvers: [ElementPlusResolver()]
     }),
@@ -26,7 +29,8 @@ export default defineConfig({
       eslintrc: {
         enabled: true
       },
-      dirs: ['./src/composables']
+      dirs: ['./src/composables'],
+      resolvers: [ElementPlusResolver()]
     }),
     VueDevTools()
   ]
