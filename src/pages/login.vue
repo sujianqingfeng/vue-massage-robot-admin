@@ -22,7 +22,7 @@ const submit = async () => {
 
 <template>
   <div
-    class="bg-[url(/bg-login.png)] h-full w-full flex justify-center items-center"
+    class="bg-[url(/bg-login.png)] bg-cover h-full w-full flex justify-center items-center"
   >
     <div class="w-235 h-117 bg-white rounded-1 flex">
       <div class="w-117.5 bg-[url(/bg-login-left.png)] bg-cover h-full">

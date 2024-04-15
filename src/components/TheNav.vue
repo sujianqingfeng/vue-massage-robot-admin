@@ -37,7 +37,12 @@ const MENUS = [
   }
 ]
 
-const defaultActive = ref('/dashboard')
+let defaultActive = ''
+const route = useRoute()
+const current = route.matched[1]
+if (current) {
+  defaultActive = current.path
+}
 </script>
 
 <template>

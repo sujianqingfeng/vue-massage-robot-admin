@@ -7,7 +7,7 @@ onMounted(() => {
     title: {
       text: `111`,
       subtext: '设备总数',
-      top: '30%',
+      top: '32%',
       left: 'center',
       textStyle: {
         fontSize: '16',
@@ -75,8 +75,8 @@ onMounted(() => {
 <template>
   <div class="w-60 p-6 border-r h-full">
     <div class="color-#0D1926 text-4.5 leading-5.27 font-bold">设备总数</div>
-    <div class="flex justify-center items-center">
-      <EChartsWrapper ref="eChartRef" class="w-24 h-full" />
+    <div class="flex justify-center items-center h-full">
+      <EChartsWrapper ref="eChartRef" class="w-24 h-60" />
     </div>
   </div>
 </template>

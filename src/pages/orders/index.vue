@@ -14,6 +14,11 @@ const onQuery = () => {
 const onReset = () => {
   console.log('reset')
 }
+
+const router = useRouter()
+const onGoToDetail = () => {
+  router.push('/orders/detail')
+}
 </script>
 
 <template>
@@ -58,7 +63,9 @@ const onReset = () => {
         <el-table-column label="工作结束时间" />
         <el-table-column label="操作">
           <template #default="{ row }">
-            <ElButton link type="primary">查看</ElButton>
+            <ElButton link type="primary" @click="onGoToDetail(row)">
+              查看
+            </ElButton>
           </template>
         </el-table-column>
       </el-table>
