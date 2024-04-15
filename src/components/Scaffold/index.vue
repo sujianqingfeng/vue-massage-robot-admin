@@ -34,8 +34,8 @@ const pagination = defineModel('pagination', {
 
     <div class="flex-auto">
       <el-auto-resizer>
-        <template #default="{ height }">
-          <slot name="table" :height="height"></slot>
+        <template #default="{ height, width }">
+          <slot name="table" :width="width" :height="height"></slot>
         </template>
       </el-auto-resizer>
     </div>

@@ -1,6 +1,4 @@
-<script setup lang="jsx">
-import { ElButton } from 'element-plus'
-
+<script setup>
 const queryForm = ref({
   test: ''
 })
@@ -8,47 +6,6 @@ const data = ref([
   { orderNo: '123', no: '222' },
   { orderNo: '123', no: '222' }
 ])
-
-const columns = [
-  {
-    label: '订单号',
-    prop: 'orderNo'
-  },
-  {
-    label: '机器编号',
-    prop: 'no'
-  },
-  {
-    label: '所属门店',
-    prop: 'orderNo'
-  },
-  {
-    label: '项目内容'
-  },
-  {
-    label: '创建时间'
-  },
-  {
-    label: '订单金额（元）'
-  },
-  {
-    label: '支付状态'
-  },
-  {
-    label: '工作开始时间'
-  },
-  {
-    label: '工作结束时间'
-  },
-  {
-    label: '操作',
-    cellRenderer: () => (
-      <ElButton link type="primary">
-        查看
-      </ElButton>
-    )
-  }
-]
 
 const onQuery = () => {
   console.log('query', queryForm.value)
@@ -89,7 +46,7 @@ const onReset = () => {
     </template>
 
     <template #table="{ height }">
-      <!-- <el-table :height="height + 'px'" :data="data">
+      <el-table :height="height + 'px'" :data="data">
         <el-table-column prop="orderNo" label="订单号" />
         <el-table-column prop="no" label="机器编号" />
         <el-table-column prop="orderNo" label="所属门店" />
@@ -104,7 +61,7 @@ const onReset = () => {
             <ElButton link type="primary">查看</ElButton>
           </template>
         </el-table-column>
-      </el-table> -->
+      </el-table>
     </template>
   </Scaffold>
 </template>
