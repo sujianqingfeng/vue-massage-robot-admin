@@ -65,9 +65,9 @@ const onGoToDetail = () => {
         <el-table-column label="工作结束时间" />
         <el-table-column label="操作">
           <template #default="{ row }">
-            <ElButton link type="primary" @click="onGoToDetail(row)">
+            <el-button link type="primary" @click="onGoToDetail(row)">
               查看
-            </ElButton>
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

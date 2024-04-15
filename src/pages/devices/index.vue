@@ -122,16 +122,18 @@ const onDeviceFeature = () => {
         </el-table-column>
         <el-table-column label="操作" width="330">
           <template #default="{ row }">
-            <ElButton link type="primary" @click="onModifyDevice(row)">
+            <el-button link type="primary" @click="onModifyDevice(row)">
               编辑
-            </ElButton>
-            <ElButton link type="primary" @click="onGoToDetail(row)">
+            </el-button>
+            <el-button link type="primary" @click="onGoToDetail(row)">
               下载二维码
-            </ElButton>
-            <ElButton link type="primary" @click="onGoToDetail(row)">
+            </el-button>
+            <el-button link type="primary" @click="onGoToDetail(row)">
               错误码记录
-            </ElButton>
-            <ElButton link type="danger" @click="onDelete(row)">删除</ElButton>
+            </el-button>
+            <el-button link type="danger" @click="onDelete(row)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

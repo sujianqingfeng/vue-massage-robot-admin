@@ -38,6 +38,7 @@ declare module 'vue' {
     ElTableV2: typeof import('element-plus/es')['ElTableV2']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
+    ElTree: typeof import('element-plus/es')['ElTree']
     Pagination: typeof import('./../src/components/Scaffold/Pagination.vue')['default']
     Query: typeof import('./../src/components/Scaffold/Query.vue')['default']
     QueryItem: typeof import('./../src/components/Scaffold/QueryItem.vue')['default']

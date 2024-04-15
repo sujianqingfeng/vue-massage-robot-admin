@@ -22,6 +22,22 @@ const router = createRouter({
         {
           path: '/devices',
           component: () => import('./pages/devices/index.vue')
+        },
+        {
+          path: '/permissions',
+          component: () => import('./pages/permissions/index.vue')
+        },
+        {
+          path: '/users',
+          component: () => import('./pages/users/index.vue')
+        },
+        {
+          path: '/operates',
+          component: () => import('./pages/operates/index.vue')
+        },
+        {
+          path: '/shops',
+          component: () => import('./pages/shops/index.vue')
         }
       ]
     },
