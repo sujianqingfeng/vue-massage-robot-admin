@@ -34,6 +34,11 @@ const MENUS = [
     name: '门店管理',
     icon: 'i-cp-shop',
     path: '/shops'
+  },
+  {
+    name: '门店消费记录',
+    icon: 'i-ri-bank-card-2-fill',
+    path: '/shop-records'
   }
 ]
 

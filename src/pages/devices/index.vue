@@ -27,11 +27,32 @@ const onDelete = () => {
     ...zh.popconfirm,
     type: 'warning'
   }).then(() => {
-    ElMessage({
-      type: 'success',
-      message: 'Delete completed'
-    })
+    ElMessage.success('Delete completed')
   })
+}
+
+const onDownload = () => {
+  console.log(ElMessage.warning('暂无实现'))
+}
+
+const onBatchDownload = () => {
+  console.log(ElMessage.warning('暂无实现'))
+}
+
+const onImportDevice = () => {
+  console.log(ElMessage.warning('暂无实现'))
+}
+
+const onUpdateSoftware = () => {
+  console.log(ElMessage.warning('暂无实现'))
+}
+
+const onBatchUpdateSoftware = () => {
+  console.log(ElMessage.warning('暂无实现'))
+}
+
+const onGoToRecord = () => {
+  router.push('/devices/error-code-record')
 }
 
 const onDownloadCenter = () => {
@@ -92,10 +113,10 @@ const onDeviceFeature = () => {
     <template #operation>
       <el-button @click="onAddDevice">新增设备</el-button>
       <el-button @click="onDownloadCenter">下载中心</el-button>
-      <el-button>下载二维码</el-button>
-      <el-button>批量更新软件</el-button>
+      <el-button @click="onBatchDownload">下载二维码</el-button>
+      <el-button @click="onBatchUpdateSoftware">批量更新软件</el-button>
       <el-button @click="onDeviceFeature">批量设备使能</el-button>
-      <el-button>EXCEL导入设备</el-button>
+      <el-button @click="onImportDevice">EXCEL导入设备</el-button>
     </template>
 
     <template #table="{ height }">
@@ -113,8 +134,11 @@ const onDeviceFeature = () => {
         <el-table-column label="设备使能" />
         <el-table-column label="当前软件版本" />
         <el-table-column label="更新软件">
-          <template #default="scope">
-            <span class="flex items-center gap-1 color-#24CC85">
+          <template #default="{ row }">
+            <span
+              class="flex items-center gap-1 color-#24CC85 cursor-pointer"
+              @click="onUpdateSoftware(row)"
+            >
               <span class="i-ri-refresh-line"></span>
               <span>更新软件</span>
             </span>
@@ -125,10 +149,10 @@ const onDeviceFeature = () => {
             <el-button link type="primary" @click="onModifyDevice(row)">
               编辑
             </el-button>
-            <el-button link type="primary" @click="onGoToDetail(row)">
+            <el-button link type="primary" @click="onDownload(row)">
               下载二维码
             </el-button>
-            <el-button link type="primary" @click="onGoToDetail(row)">
+            <el-button link type="primary" @click="onGoToRecord(row)">
               错误码记录
             </el-button>
             <el-button link type="danger" @click="onDelete(row)">

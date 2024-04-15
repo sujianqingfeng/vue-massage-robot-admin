@@ -17,6 +17,11 @@ const onQuery = () => {
   console.log('query', queryForm.value)
 }
 
+const router = useRouter()
+const onGoToDeviceList = () => {
+  router.push('/shops/devices')
+}
+
 const onDelete = () => {
   ElMessageBox.confirm('你确定删除吗?', '', {
     ...zh.popconfirm,
@@ -91,7 +96,13 @@ const onModifyShop = () => {
         <el-table-column label="类型" />
         <el-table-column label="运营商" />
         <el-table-column label="地址" />
-        <el-table-column label="所有设备" />
+        <el-table-column label="所有设备">
+          <template #default="{ row }">
+            <el-button link type="primary" @click="onGoToDeviceList(row)">
+              查看设备列表
+            </el-button>
+          </template>
+        </el-table-column>
 
         <el-table-column label="操作" width="330">
           <template #default="{ row }">

@@ -21,7 +21,16 @@ const router = createRouter({
         },
         {
           path: '/devices',
-          component: () => import('./pages/devices/index.vue')
+          children: [
+            {
+              path: '',
+              component: () => import('./pages/devices/index.vue')
+            },
+            {
+              path: 'error-code-record',
+              component: () => import('./pages/devices/error-code-record.vue')
+            }
+          ]
         },
         {
           path: '/permissions',
@@ -37,7 +46,20 @@ const router = createRouter({
         },
         {
           path: '/shops',
-          component: () => import('./pages/shops/index.vue')
+          children: [
+            {
+              path: '',
+              component: () => import('./pages/shops/index.vue')
+            },
+            {
+              path: 'devices',
+              component: () => import('./pages/shops/devices.vue')
+            }
+          ]
+        },
+        {
+          path: '/shop-records',
+          component: () => import('./pages/shop-records/index.vue')
         }
       ]
     },
