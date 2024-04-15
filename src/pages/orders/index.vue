@@ -1,23 +1,25 @@
 <script setup>
-const queryForm = ref({
-  test: ''
-})
+import DetailDrawer from './components/DetailDrawer.vue'
+
+const detailDrawerRef = ref(null)
+
 const data = ref([
   { orderNo: '123', no: '222' },
   { orderNo: '123', no: '222' }
 ])
 
+const { queryForm, onReset } = useQuery({
+  defaultForm: {
+    test: ''
+  }
+})
+
 const onQuery = () => {
   console.log('query', queryForm.value)
 }
 
-const onReset = () => {
-  console.log('reset')
-}
-
-const router = useRouter()
 const onGoToDetail = () => {
-  router.push('/orders/detail')
+  detailDrawerRef.value.show()
 }
 </script>
 
@@ -69,6 +71,10 @@ const onGoToDetail = () => {
           </template>
         </el-table-column>
       </el-table>
+    </template>
+
+    <template #footer>
+      <DetailDrawer ref="detailDrawerRef" />
     </template>
   </Scaffold>
 </template>

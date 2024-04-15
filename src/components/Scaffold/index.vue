@@ -23,14 +23,19 @@ const pagination = defineModel('pagination', {
   <div class="bg-white rounded-1 p-6 h-full flex flex-col">
     <slot name="query"></slot>
 
-    <slot name="title">
-      <div
-        v-if="title"
-        class="color-#1E1E1E text-4.5 leading-5.27 font-bold my-6"
-      >
-        {{ title }}
+    <div class="flex justify-between items-center">
+      <slot name="title">
+        <div
+          v-if="title"
+          class="color-#1E1E1E text-4.5 leading-5.27 font-bold my-6"
+        >
+          {{ title }}
+        </div>
+      </slot>
+      <div>
+        <slot name="operation"></slot>
       </div>
-    </slot>
+    </div>
 
     <div class="flex-auto">
       <el-auto-resizer>
@@ -50,5 +55,7 @@ const pagination = defineModel('pagination', {
         />
       </div>
     </slot>
+
+    <slot name="footer"></slot>
   </div>
 </template>

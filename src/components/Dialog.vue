@@ -5,6 +5,10 @@ defineProps({
   loading: {
     type: Boolean,
     default: false
+  },
+  showFooter: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -23,8 +27,8 @@ const onConfirm = () => {
   <el-dialog v-model="dialogVisible">
     <slot></slot>
 
-    <template #footer>
-      <div class="dialog-footer">
+    <template v-if="showFooter" #footer>
+      <div class="text-center">
         <el-button @click="onCancel">取消</el-button>
         <el-button type="primary" :loading="loading" @click="onConfirm">
           确定

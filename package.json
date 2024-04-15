@@ -26,6 +26,7 @@
     "@unocss/transformer-directives": "^0.59.2",
     "@vitejs/plugin-vue": "^5.0.4",
     "eslint": "^8.54.0",
+    "sass": "^1.75.0",
     "unocss": "^0.59.0",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",

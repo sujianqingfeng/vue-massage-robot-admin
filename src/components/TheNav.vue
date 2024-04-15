@@ -60,6 +60,9 @@ if (current) {
 .el-menu {
   --at-apply: h-full;
 }
+.el-menu .el-menu-item {
+  --at-apply: border-l-2 border-transparent;
+}
 .el-menu .el-menu-item.is-active {
   --at-apply: bg-#0083FF/10 border-l-2 border-#0083FF;
 }

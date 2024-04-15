@@ -6,6 +6,8 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const ElMessage: typeof import('element-plus/es')['ElMessage']
+  const ElMessageBox: typeof import('element-plus/es')['ElMessageBox']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const computed: typeof import('vue')['computed']
@@ -204,6 +206,7 @@ declare global {
   const usePreferredLanguages: typeof import('@vueuse/core')['usePreferredLanguages']
   const usePreferredReducedMotion: typeof import('@vueuse/core')['usePreferredReducedMotion']
   const usePrevious: typeof import('@vueuse/core')['usePrevious']
+  const useQuery: typeof import('../src/composables/use-query.js')['useQuery']
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
   const useRequest: typeof import('../src/composables/use-request.js')['useRequest']
@@ -260,6 +263,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
+  const useZh: typeof import('../src/composables/use-zh.js')['useZh']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']

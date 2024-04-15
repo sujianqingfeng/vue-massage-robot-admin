@@ -279,6 +279,10 @@
     "whenever": true,
     "useRequest": true,
     "useRequestList": true,
-    "useTemplateDialog": true
+    "useTemplateDialog": true,
+    "useQuery": true,
+    "ElMessage": true,
+    "ElMessageBox": true,
+    "useZh": true
   }
 }

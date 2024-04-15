@@ -16,7 +16,7 @@ export const useTemplateDialog = () => {
 
   onUnmounted(unmounted)
 
-  const show = async (options) => {
+  const showDialog = async (options) => {
     visible.value = true
     loading.value = false
 
@@ -113,6 +113,6 @@ export const useTemplateDialog = () => {
   }
 
   return {
-    show
+    showDialog
   }
 }
