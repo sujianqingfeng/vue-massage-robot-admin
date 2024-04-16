@@ -1,4 +1,6 @@
 <script setup>
+const emit = defineEmits(['paginationChange'])
+
 defineProps({
   title: {
     type: String,
@@ -17,6 +19,10 @@ const pagination = defineModel('pagination', {
     currentPage: 1
   })
 })
+
+const onPaginationChange = () => {
+  emit('paginationChange')
+}
 </script>
 
 <template>
@@ -46,12 +52,10 @@ const pagination = defineModel('pagination', {
     </div>
     <slot name="pagination">
       <div class="flex justify-end py-2">
-        <el-pagination
-          v-model:current-page="pagination.currentPage"
-          small
-          background
-          layout="prev, pager, next"
+        <Pagination
+          :pagination="pagination"
           :total="total"
+          @change="onPaginationChange"
         />
       </div>
     </slot>

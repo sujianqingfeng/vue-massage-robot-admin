@@ -1,4 +1,6 @@
 <script setup>
+const emit = defineEmits(['change'])
+
 defineProps({
   total: {
     type: Number,
@@ -16,6 +18,10 @@ const pagination = defineModel('pagination', {
     currentPage: 1
   })
 })
+
+const onChange = () => {
+  emit('change')
+}
 </script>
 
 <template>
@@ -26,5 +32,6 @@ const pagination = defineModel('pagination', {
     background
     :layout="layout"
     :total="total"
+    @change="onChange"
   />
 </template>

@@ -1,6 +1,7 @@
 export const useQuery = ({
   defaultForm,
   fetchListApi,
+  resetPagination,
   autoFetch = true
 } = {}) => {
   const queryForm = ref({
@@ -9,6 +10,7 @@ export const useQuery = ({
 
   const onReset = () => {
     queryForm.value = { ...defaultForm }
+    resetPagination()
     autoFetch && onQuery()
   }
 

@@ -9,16 +9,18 @@ const detailDrawerRef = ref(null)
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { createApiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, fetchListApi, loading } = useRequestList({
-  apiFn: fetchRoleListApi
-})
+const { list, pagination, fetchListApi, loading, total, resetPagination } =
+  useRequestList({
+    apiFn: fetchRoleListApi
+  })
 
 const { queryForm, onReset, onQuery } = useQuery({
   defaultForm: {
     status: '',
     keywords: ''
   },
-  fetchListApi
+  fetchListApi,
+  resetPagination
 })
 
 const { mapLabel, getOptions } = useOptions({
@@ -80,7 +82,12 @@ const onDistributionPermission = ({ id }) => {
 </script>
 
 <template>
-  <Scaffold title="权限管理">
+  <Scaffold
+    title="权限管理"
+    :pagination="pagination"
+    :total="total"
+    @pagination-change="onQuery"
+  >
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>

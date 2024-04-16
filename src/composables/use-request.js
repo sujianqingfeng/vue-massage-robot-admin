@@ -96,12 +96,20 @@ export const useRequestList = ({
     fetchListApi(params)
   }
 
+  const resetPagination = () => {
+    pagination.value = {
+      pageSize: 20,
+      currentPage: 1
+    }
+  }
+
   return {
     loading,
     total,
     pagination,
     list,
     finished,
-    fetchListApi
+    fetchListApi,
+    resetPagination
   }
 }
