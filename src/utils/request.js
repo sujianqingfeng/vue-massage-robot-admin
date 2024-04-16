@@ -10,7 +10,7 @@ import {
 import { TOKEN_KEY } from '~/constants'
 
 const request = createAxios({
-  baseURL: '/linghuRobot',
+  baseURL: `${import.meta.env.VITE_BASE_API_URL}/linghuRobot`,
   headers: {
     'content-type': 'application/x-www-form-urlencoded'
   }
