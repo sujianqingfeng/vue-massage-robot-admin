@@ -44,6 +44,11 @@ const onModifyOperate = () => {
     width: '40rem'
   })
 }
+
+const router = useRouter()
+const goToShops = () => {
+  router.push('/operates/shops')
+}
 </script>
 
 <template>
@@ -78,7 +83,13 @@ const onModifyOperate = () => {
         <el-table-column label="运营商负责人" />
         <el-table-column label="手机号码" />
         <el-table-column label="地址" />
-        <el-table-column label="所有门店" />
+        <el-table-column label="所有门店">
+          <template #default="{ row }">
+            <el-button link type="primary" @click="goToShops(row)">
+              查看门店列表
+            </el-button>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="330">
           <template #default="{ row }">
             <el-button link type="primary" @click="onModifyOperate(row)">

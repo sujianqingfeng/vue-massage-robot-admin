@@ -9,6 +9,25 @@ const rules = {
   age: [{ required: true, message: '请选择所属门店', trigger: 'blur' }]
 }
 
+const data = [
+  {
+    value: '1',
+    label: 'Level one 1',
+    children: [
+      {
+        value: '1-1',
+        label: 'Level two 1-1',
+        children: [
+          {
+            value: '1-1-1',
+            label: 'Level three 1-1-1'
+          }
+        ]
+      }
+    ]
+  }
+]
+
 const show = () => {
   console.log('show')
 }
@@ -30,10 +49,14 @@ defineExpose({
     </el-form-item>
 
     <el-form-item label="权限" prop="name">
-      <el-select v-model="form.name" placeholder="请选择权限">
-        <el-option label="全部" value="all" />
-        <el-option label="待支付" value="unpaid" />
-      </el-select>
+      <el-tree-select
+        v-model="form.name"
+        :data="data"
+        multiple
+        :render-after-expand="false"
+        show-checkbox
+        placeholder="请选择权限"
+      />
     </el-form-item>
   </el-form>
 </template>

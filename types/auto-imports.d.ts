@@ -151,6 +151,7 @@ declare global {
   const useElementBounding: typeof import('@vueuse/core')['useElementBounding']
   const useElementByPoint: typeof import('@vueuse/core')['useElementByPoint']
   const useElementHover: typeof import('@vueuse/core')['useElementHover']
+  const useElementPlusTable: typeof import('../src/composables/use-element-plus.js')['useElementPlusTable']
   const useElementSize: typeof import('@vueuse/core')['useElementSize']
   const useElementVisibility: typeof import('@vueuse/core')['useElementVisibility']
   const useEventBus: typeof import('@vueuse/core')['useEventBus']

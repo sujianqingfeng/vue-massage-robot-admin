@@ -5,6 +5,7 @@ const detailDrawerRef = ref(null)
 
 const zh = useZh()
 const { showDialog } = useTemplateDialog()
+const { selections, onSelectionChange } = useElementPlusTable()
 
 const data = ref([
   { orderNo: '123', no: '222' },
@@ -22,9 +23,6 @@ const onQuery = () => {
 }
 
 const router = useRouter()
-const onGoToDetail = () => {
-  router.push('/orders/detail')
-}
 
 const onDelete = () => {
   ElMessageBox.confirm('你确定删除吗?', '', {
@@ -39,10 +37,6 @@ const onDownload = () => {
   console.log(ElMessage.warning('暂无实现'))
 }
 
-const onBatchDownload = () => {
-  console.log(ElMessage.warning('暂无实现'))
-}
-
 const onImportDevice = () => {
   console.log(ElMessage.warning('暂无实现'))
 }
@@ -51,8 +45,20 @@ const onUpdateSoftware = () => {
   console.log(ElMessage.warning('暂无实现'))
 }
 
+const onBatchDownload = () => {
+  const length = selections.value.length
+  ElMessageBox.confirm('确定下载二维码?', '', {
+    ...zh.popconfirm,
+    type: 'warning'
+  }).then(() => {
+    ElMessage.warning(`已选择${length}个`)
+    ElMessage.success('Delete completed')
+  })
+}
+
 const onBatchUpdateSoftware = () => {
-  console.log(ElMessage.warning('暂无实现'))
+  const length = selections.value.length
+  ElMessage.warning(`已选择${length}个`)
 }
 
 const onDetail = () => {
@@ -91,6 +97,14 @@ const onModifyDevice = () => {
 const onDeviceFeature = () => {
   showDialog({
     template: () => import('./components/DeviceFeatureTemplate.vue'),
+    title: '设备使能',
+    width: '40rem'
+  })
+}
+
+const onBatchDeviceFeature = () => {
+  showDialog({
+    template: () => import('./components/DeviceFeatureTemplate.vue'),
     title: '批量设备使能',
     width: '40rem'
   })
@@ -123,12 +137,17 @@ const onDeviceFeature = () => {
       <el-button @click="onDownloadCenter">下载中心</el-button>
       <el-button @click="onBatchDownload">下载二维码</el-button>
       <el-button @click="onBatchUpdateSoftware">批量更新软件</el-button>
-      <el-button @click="onDeviceFeature">批量设备使能</el-button>
+      <el-button @click="onBatchDeviceFeature">批量设备使能</el-button>
       <el-button @click="onImportDevice">EXCEL导入设备</el-button>
     </template>
 
     <template #table="{ height }">
-      <el-table :height="height + 'px'" :data="data">
+      <el-table
+        :height="height + 'px'"
+        :data="data"
+        @selection-change="onSelectionChange"
+      >
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="no" label="机器编号" />
         <el-table-column label="设备名称" />
         <el-table-column label="设备状态">
@@ -139,7 +158,13 @@ const onDeviceFeature = () => {
         </el-table-column>
         <el-table-column label="所属门店" />
         <el-table-column label="更新时间" />
-        <el-table-column label="设备使能" />
+        <el-table-column label="设备使能" width="100">
+          <template #default="{ row }">
+            <el-button link type="success" @click="onDeviceFeature(row)">
+              设备使能开关列表
+            </el-button>
+          </template>
+        </el-table-column>
         <el-table-column label="当前软件版本" />
         <el-table-column label="更新软件">
           <template #default="{ row }">

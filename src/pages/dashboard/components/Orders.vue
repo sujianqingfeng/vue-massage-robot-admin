@@ -111,7 +111,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="text-4.5 color-#0D1926 font-bold leading-5.27">订单趋势</div>
+  <div class="flex justify-between items-center">
+    <div class="text-4.5 color-#0D1926 font-bold leading-5.27">订单趋势</div>
+    <div class="flex gap-2.5">
+      <div class="w-60">
+        <DateRange />
+      </div>
+      <div class="w-18">
+        <el-select v-model="v" placeholder="Select">
+          <el-option key="item.value" label="今日" value="item.value" />
+        </el-select>
+      </div>
+    </div>
+  </div>
 
   <div class="h-full">
     <div ref="eChartRef" class="w-full h-full"></div>

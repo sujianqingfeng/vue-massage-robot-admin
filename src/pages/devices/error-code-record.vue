@@ -15,14 +15,17 @@ const infos = [
     value: 'fff'
   }
 ]
+
+const router = useRouter()
+const onBack = () => {
+  router.back()
+}
 </script>
 
 <template>
-  <Scaffold title="错误码记录">
+  <Scaffold>
     <template #title>
-      <div class="color-#1E1E1E text-4.5 leading-5.27 font-bold mb-6">
-        错误码记录
-      </div>
+      <BackTitle title="错误码记录" @back="onBack" />
     </template>
     <template #operation>
       <div class="flex items-center gap-8 text-4">

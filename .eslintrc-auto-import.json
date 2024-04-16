@@ -283,6 +283,7 @@
     "useQuery": true,
     "ElMessage": true,
     "ElMessageBox": true,
-    "useZh": true
+    "useZh": true,
+    "useElementPlusTable": true
   }
 }

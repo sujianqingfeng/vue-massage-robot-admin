@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BackTitle: typeof import('./../src/components/Scaffold/BackTitle.vue')['default']
+    ChangePasswordTemplate: typeof import('./../src/components/TheHeader/ChangePasswordTemplate.vue')['default']
     DateRange: typeof import('./../src/components/DateRange.vue')['default']
     Dialog: typeof import('./../src/components/Dialog.vue')['default']
     EChartsWrapper: typeof import('./../src/components/EChartsWrapper.vue')['default']
@@ -25,6 +27,7 @@ declare module 'vue' {
     ElFromItem: typeof import('element-plus/es')['ElFromItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElLink: typeof import('element-plus/es')['ElLink']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
@@ -39,6 +42,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
     ElTree: typeof import('element-plus/es')['ElTree']
+    ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
     Pagination: typeof import('./../src/components/Scaffold/Pagination.vue')['default']
     Query: typeof import('./../src/components/Scaffold/Query.vue')['default']
     QueryItem: typeof import('./../src/components/Scaffold/QueryItem.vue')['default']
@@ -50,7 +54,7 @@ declare module 'vue' {
     Tablfffe: typeof import('./../src/components/Scaffold/Tablfffe.vue')['default']
     Temp: typeof import('./../src/components/Temp.vue')['default']
     Test: typeof import('./../src/components/Test.vue')['default']
-    TheHeader: typeof import('./../src/components/TheHeader.vue')['default']
+    TheHeader: typeof import('./../src/components/TheHeader/index.vue')['default']
     TheNav: typeof import('./../src/components/TheNav.vue')['default']
     TheTest: typeof import('./../src/components/Scaffold/TheTest.jsx')['default']
   }
