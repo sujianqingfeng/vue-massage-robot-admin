@@ -1,12 +1,10 @@
-export const useRequest = (options = {}) => {
-  const {
-    apiFn,
-    params = {},
-    defaultResult = {},
-    afterFetch = null,
-    autoFetch = false
-  } = options
-
+export const useRequest = ({
+  apiFn,
+  params = {},
+  defaultResult = {},
+  afterFetch = null,
+  autoFetch = false
+} = {}) => {
   if (!apiFn) {
     throw new Error('apiFN is required')
   }
@@ -14,14 +12,15 @@ export const useRequest = (options = {}) => {
   const result = ref(defaultResult)
   const loading = ref(false)
 
-  const fetchApi = async (...rest) => {
+  const fetchApi = async (params) => {
     loading.value = true
 
-    const { data, error } = await apiFn(...rest)
+    const { data, error } = await apiFn(params)
     if (error) {
       loading.value = false
       return { data, error }
     }
+    loading.value = false
     result.value = afterFetch ? afterFetch(data) : data
 
     return { data, error }
@@ -40,17 +39,16 @@ export const useRequest = (options = {}) => {
 
 const transformPaginationParams = (pagination) => {
   const { pageSize, currentPage: pageNo } = pagination
-  return { pageNo, pageSize }
+  return { current: pageNo, size: pageSize }
 }
 
-export const useRequestList = (options = {}) => {
-  const {
-    apiFn,
-    autoFetch = true,
-    params = {},
-    defaultResult = {},
-    afterFetch = null
-  } = options
+export const useRequestList = ({
+  apiFn,
+  autoFetch = true,
+  params = {},
+  defaultResult = [],
+  afterFetch = null
+} = {}) => {
   if (!apiFn) {
     throw new Error('apiFn is required')
   }
@@ -72,7 +70,12 @@ export const useRequestList = (options = {}) => {
     autoFetch: false,
     defaultResult,
     afterFetch: (data) => {
-      const { data: content, pageNo, totalPage, totalRecord } = data
+      const {
+        records: content,
+        current: pageNo,
+        pages: totalPage,
+        total: totalRecord
+      } = data
 
       finished.value = pageNo >= totalPage
       total.value = totalRecord

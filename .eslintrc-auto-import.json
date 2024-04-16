@@ -284,6 +284,9 @@
     "ElMessage": true,
     "ElMessageBox": true,
     "useZh": true,
-    "useElementPlusTable": true
+    "useElementPlusTable": true,
+    "useOptions": true,
+    "useApiDeleteConfirm": true,
+    "useTransformOptions": true
   }
 }

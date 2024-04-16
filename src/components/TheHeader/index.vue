@@ -1,6 +1,14 @@
 <script setup>
+import { fetchCurrentUserApi, fetchLogoutApi } from '~/api'
+import { TOKEN_KEY } from '~/constants'
+
 const router = useRouter()
 const { showDialog } = useTemplateDialog()
+const token = useStorage(TOKEN_KEY, '')
+const { result: user } = useRequest({
+  apiFn: fetchCurrentUserApi,
+  autoFetch: true
+})
 
 const onChangePassword = () => {
   console.log('修改密码')
@@ -12,12 +20,22 @@ const onChangePassword = () => {
   })
 }
 
+const onLogout = async () => {
+  fetchLogoutApi()
+  token.value = null
+  router.replace('/login')
+}
+
 const onCommand = (val) => {
   if (val === 'changePassword') {
     onChangePassword()
   } else if (val === 'logout') {
-    router.replace('/login')
+    onLogout()
   }
+}
+
+const onRefresh = () => {
+  window.location.reload()
 }
 </script>
 
@@ -28,12 +46,15 @@ const onCommand = (val) => {
     </div>
 
     <div class="flex justify-start items-center gap-4">
-      <button class="color-#D1D6DC text-4 i-carbon-restart"></button>
+      <button
+        class="color-#D1D6DC text-4 i-carbon-restart"
+        @click="onRefresh"
+      ></button>
       <div class="inline-block h-3 w-1px bg-#768395"></div>
 
       <el-dropdown trigger="click" @command="onCommand">
         <div class="flex items-center gap-1 text-white text-3.5 leading-4.1">
-          你好，张希西
+          你好，{{ user.adminName || '未知' }}
           <div class="i-ri-arrow-down-s-line"></div>
         </div>
         <template #dropdown>

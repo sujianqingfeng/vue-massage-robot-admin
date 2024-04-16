@@ -50,6 +50,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Scaffold: typeof import('./../src/components/Scaffold/index.vue')['default']
     ScaffoldTable: typeof import('./../src/components/Scaffold/ScaffoldTable.jsx')['default']
+    SelectWithOptions: typeof import('./../src/components/SelectWithOptions.vue')['default']
     Table: typeof import('./../src/components/Scaffold/Table.vue')['default']
     Tablfffe: typeof import('./../src/components/Scaffold/Tablfffe.vue')['default']
     Temp: typeof import('./../src/components/Temp.vue')['default']
@@ -57,5 +58,8 @@ declare module 'vue' {
     TheHeader: typeof import('./../src/components/TheHeader/index.vue')['default']
     TheNav: typeof import('./../src/components/TheNav.vue')['default']
     TheTest: typeof import('./../src/components/Scaffold/TheTest.jsx')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

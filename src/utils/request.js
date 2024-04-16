@@ -4,9 +4,10 @@ import {
   createExtractDataInterceptor,
   createFilterEmptyInterceptor,
   createInnerRequestInterceptor,
-  createRedirectInterceptor,
-  createSerializeInterceptor
+  createSerializeInterceptor,
+  createInnerResponseInterceptor
 } from '@sujian/request'
+import { TOKEN_KEY } from '~/constants'
 
 const request = createAxios({
   baseURL: '/linghuRobot',
@@ -17,8 +18,8 @@ const request = createAxios({
 
 const headerInterceptor = createInnerRequestInterceptor([
   (config) => {
-    if (config.headers) {
-      const token = localStorage.getItem('token')
+    const token = localStorage.getItem(TOKEN_KEY)
+    if (config.headers && token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
     return config
@@ -53,17 +54,17 @@ const extractDataInterceptor = createExtractDataInterceptor({
   }
 })
 
-const redirectInterceptor = createRedirectInterceptor({
-  isRedirect: (res) => {
-    const data = res.data
-    const { code } = data
-
-    const host = `${location.protocol}//${location.host}#`
-    if (code === 'R40005') {
-      return `${host}/login`
+const redirectInterceptor = createInnerResponseInterceptor([
+  (res) => Promise.resolve(res),
+  (error) => {
+    if (error.response?.data?.code === '4311') {
+      localStorage.removeItem(TOKEN_KEY)
+      const url = `${location.protocol}//${location.host}/login`
+      window.location.href = url
     }
+    return Promise.reject(error)
   }
-})
+])
 
 request
   .useReqInterceptor(
@@ -97,3 +98,5 @@ const createTryWrapper = (fn) => {
 
 export const requestGet = createTryWrapper(request.get)
 export const requestPost = createTryWrapper(request.post)
+export const requestDelete = createTryWrapper(request.delete)
+export const requestPut = createTryWrapper(request.put)

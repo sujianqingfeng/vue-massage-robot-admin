@@ -1,40 +1,22 @@
 <script setup>
-const treeRef = ref(null)
-const defaultProps = {
-  children: 'children',
-  label: 'label'
-}
-const data = [
-  {
-    label: 'Level one 2',
-    children: [
-      {
-        label: 'Level two 2-1',
-        children: [
-          {
-            label: 'Level three 2-1-1'
-          }
-        ]
-      },
-      {
-        label: 'Level two 2-2',
-        children: [
-          {
-            label: 'Level three 2-2-1'
-          }
-        ]
-      }
-    ]
-  }
-]
+import { usePermissionMenus, useRolePermissions } from '../use-permissions'
 
-const show = () => {
-  console.log('show')
+const options = ref({})
+const treeRef = ref(null)
+const { menus } = usePermissionMenus()
+const { fetchRoleAssignMenuIds } = useRolePermissions()
+
+const show = (_options) => {
+  options.value = _options
+  fetchRoleAssignMenuIds({ roleNo: _options.id })
 }
 
 const onConfirm = async () => {
-  console.log(treeRef.value?.getCheckedNodes())
-  console.log(treeRef.value?.getCheckedKeys())
+  const menuIds = treeRef.value?.getCheckedNodes().map((node) => node.value)
+  return {
+    id: options.value.id,
+    menuIds
+  }
 }
 
 defineExpose({
@@ -44,5 +26,5 @@ defineExpose({
 </script>
 
 <template>
-  <el-tree ref="treeRef" show-checkbox :data="data" :props="defaultProps" />
+  <el-tree ref="treeRef" show-checkbox :data="menus" />
 </template>

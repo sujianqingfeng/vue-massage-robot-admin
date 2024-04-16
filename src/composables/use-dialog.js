@@ -112,7 +112,26 @@ export const useTemplateDialog = () => {
     render(dialog, mountNode)
   }
 
+  const createDialogTemplateApiConfirm = ({
+    apiFn,
+    successMessage = '操作成功',
+    onSuccess
+  }) => {
+    return async ({ hide, result, startLoading, stopLoading }) => {
+      startLoading()
+      const { error } = await apiFn(result)
+      stopLoading()
+      if (error) {
+        return
+      }
+      successMessage && ElMessage.success(successMessage)
+      hide()
+      onSuccess && onSuccess()
+    }
+  }
+
   return {
-    showDialog
+    showDialog,
+    createDialogTemplateApiConfirm
   }
 }

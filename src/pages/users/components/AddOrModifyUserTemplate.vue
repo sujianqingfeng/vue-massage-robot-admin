@@ -1,8 +1,12 @@
 <script setup>
 const formRef = ref(null)
 const form = ref({
-  name: '',
-  age: ''
+  adminNo: '',
+  account: '',
+  adminName: '',
+  roleNo: '',
+  passwordPlaintext: '',
+  status: ''
 })
 const rules = {
   name: [{ required: true, message: '请输入机器编号', trigger: 'blur' }],
@@ -24,7 +28,13 @@ defineExpose({
 </script>
 
 <template>
-  <el-form ref="formRef" :model="form" :rules="rules">
+  <el-form
+    ref="formRef"
+    :model="form"
+    :rules="rules"
+    label-width="5rem"
+    label-position="left"
+  >
     <el-form-item label="登录账号" prop="name">
       <el-input v-model="form.name" placeholder="请输入登录账号" />
     </el-form-item>

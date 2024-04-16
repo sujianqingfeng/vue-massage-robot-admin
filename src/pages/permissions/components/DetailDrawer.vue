@@ -1,53 +1,28 @@
 <script setup>
+import { fetchRoleDetailApi } from '~/api'
+
 const [visible, toggle] = useToggle(false)
 
-const infos = [
-  {
-    label: '订单号',
-    value: '123'
-  },
-  {
-    label: '创建时间',
-    value: 'ff'
-  },
+const { result, fetchApi } = useRequest({
+  apiFn: fetchRoleDetailApi
+})
 
-  {
-    label: '订单金额',
-    value: 'ff'
-  },
+const { options: infos } = useTransformOptions({
+  info: result,
+  maps: [
+    {
+      label: '角色名称',
+      value: 'roleName'
+    },
+    {
+      label: '权限标识',
+      value: 'permCode'
+    }
+  ]
+})
 
-  {
-    label: '支付状态',
-    value: 'ff'
-  },
-  {
-    label: '支付时间',
-    value: 'ff'
-  },
-  {
-    label: '机器编号',
-    value: 'ff'
-  },
-  {
-    label: '所属门店',
-    value: 'ff'
-  },
-  {
-    label: '项目内容',
-    value: 'ff'
-  },
-
-  {
-    label: '工作开始时间',
-    value: 'ff'
-  },
-  {
-    label: '工作结束时间',
-    value: 'ff'
-  }
-]
-
-const show = () => {
+const show = ({ id }) => {
+  fetchApi(id)
   toggle(true)
 }
 
@@ -61,7 +36,7 @@ defineExpose({
     v-model="visible"
     class="detail-drawer"
     :size="480"
-    title="订单详情"
+    title="权限详情"
     direction="rtl"
   >
     <template #default>
@@ -72,7 +47,7 @@ defineExpose({
           class="flex items-center text-3.5 leading-5.5"
         >
           <div class="w-22.5 color-#666666">{{ item.label }}</div>
-          <div class="color-#333333 ml-5">fff</div>
+          <div class="color-#333333 ml-5">{{ item.value }}</div>
         </div>
       </div>
     </template>

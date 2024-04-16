@@ -1,63 +1,80 @@
 <script setup>
 import DetailDrawer from './components/DetailDrawer.vue'
+import { fetchAssignMenusApi, fetchDeleteRoleApi } from '~/api'
+import { fetchRoleListApi } from '~/api'
+import { fetchAddRoleApi } from '~/api'
 
 const detailDrawerRef = ref(null)
 
-const zh = useZh()
-const { showDialog } = useTemplateDialog()
+const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
+const { createApiDeleteConfirm } = useApiDeleteConfirm()
 
-const data = ref([
-  { orderNo: '123', no: '222' },
-  { orderNo: '123', no: '222' }
-])
-
-const { queryForm, onReset } = useQuery({
-  defaultForm: {
-    test: ''
-  }
+const { list, pagination, fetchListApi, loading } = useRequestList({
+  apiFn: fetchRoleListApi
 })
 
-const onQuery = () => {
-  console.log('query', queryForm.value)
-}
+const { queryForm, onReset, onQuery } = useQuery({
+  defaultForm: {
+    status: '',
+    keywords: ''
+  },
+  fetchListApi
+})
 
-const onDelete = () => {
-  ElMessageBox.confirm('你确定删除吗?', '', {
-    ...zh.popconfirm,
-    type: 'warning'
-  }).then(() => {
-    ElMessage({
-      type: 'success',
-      message: 'Delete completed'
-    })
+const { mapLabel, getOptions } = useOptions({
+  1: '正常',
+  0: '禁用'
+})
+
+const onDelete = ({ id }) => {
+  createApiDeleteConfirm({
+    apiFn: () => fetchDeleteRoleApi({ ids: [id] }),
+    onSuccess: onQuery
   })
 }
 
-const onDetail = () => {
-  detailDrawerRef.value.show()
+const onDetail = ({ id }) => {
+  detailDrawerRef.value.show({ id })
 }
 
 const onAddPermission = () => {
   showDialog({
     template: () => import('./components/AddOrModifyPermissionTemplate.vue'),
     title: '新增权限',
-    width: '40rem'
+    width: '30rem',
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddRoleApi,
+      successMessage: '新增成功',
+      onSuccess: onQuery
+    })
   })
 }
 
-const onModifyDevice = () => {
+const onModifyPermission = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyPermissionTemplate.vue'),
-    title: '编辑设备',
-    width: '40rem'
+    title: '编辑权限',
+    width: '30rem',
+    showParams: { id },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddRoleApi,
+      successMessage: '编辑成功',
+      onSuccess: onQuery
+    })
   })
 }
 
-const onDistributionPermission = () => {
+const onDistributionPermission = ({ id }) => {
   showDialog({
     template: () => import('./components/DistributionPermissionTemplate.vue'),
     title: '分配权限',
-    width: '40rem'
+    width: '30rem',
+    showParams: { id },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAssignMenusApi,
+      successMessage: '分配权限成功',
+      onSuccess: onQuery
+    })
   })
 }
 </script>
@@ -67,14 +84,16 @@ const onDistributionPermission = () => {
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="角色名称" />
+          <el-input v-model="queryForm.keywords" placeholder="角色名称" />
         </QueryItem>
 
         <QueryItem>
-          <el-select v-model="queryForm.test" placeholder="状态">
-            <el-option label="全部" value="all" />
-            <el-option label="待支付" value="unpaid" />
-          </el-select>
+          <SelectWithOptions
+            v-model="queryForm.status"
+            clearable
+            placeholder="状态"
+            :options="getOptions()"
+          />
         </QueryItem>
       </Query>
     </template>
@@ -84,13 +103,14 @@ const onDistributionPermission = () => {
     </template>
 
     <template #table="{ height }">
-      <el-table :height="height + 'px'" :data="data">
-        <el-table-column prop="no" label="角色名称" />
-        <el-table-column label="更新时间" />
-        <el-table-column label="设备状态">
+      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+        <el-table-column label="角色名称" prop="roleName" />
+        <el-table-column label="更新时间" prop="updateTime" />
+        <el-table-column label="状态">
           <template #default="{ row }">
-            <el-tag v-if="row.status === 'normal'" type="success">正常</el-tag>
-            <el-tag v-else type="danger">异常</el-tag>
+            <el-tag :type="row.status.code === 1 ? 'success' : 'danger'">
+              {{ mapLabel(row.status.code) }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="330">
@@ -99,7 +119,7 @@ const onDistributionPermission = () => {
               查看
             </el-button>
 
-            <el-button link type="primary" @click="onModifyDevice(row)">
+            <el-button link type="primary" @click="onModifyPermission(row)">
               编辑
             </el-button>
             <el-button

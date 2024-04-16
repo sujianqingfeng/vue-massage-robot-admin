@@ -1,39 +1,38 @@
 <script setup>
+import { usePermissionMenus } from '../use-permissions'
+import { fetchRoleDetailApi } from '~/api'
+
 const formRef = ref(null)
 const form = ref({
-  name: '',
-  age: ''
+  roleName: '',
+  permCode: '',
+  menuIds: []
 })
 const rules = {
-  name: [{ required: true, message: '请输入机器编号', trigger: 'blur' }],
-  age: [{ required: true, message: '请选择所属门店', trigger: 'blur' }]
+  roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+  permCode: [{ required: true, message: '请输入权限标识', trigger: 'blur' }],
+  menuIds: [{ required: true, message: '请选择权限', trigger: 'blur' }]
+}
+const { menus } = usePermissionMenus()
+
+const fetchRoleDetail = async (id) => {
+  if (!id) {
+    return
+  }
+  const { error, data } = await fetchRoleDetailApi(id)
+  if (error) {
+    return
+  }
+  form.value = data
 }
 
-const data = [
-  {
-    value: '1',
-    label: 'Level one 1',
-    children: [
-      {
-        value: '1-1',
-        label: 'Level two 1-1',
-        children: [
-          {
-            value: '1-1-1',
-            label: 'Level three 1-1-1'
-          }
-        ]
-      }
-    ]
-  }
-]
-
-const show = () => {
-  console.log('show')
+const show = ({ id } = {}) => {
+  fetchRoleDetail(id)
 }
 
 const onConfirm = async () => {
   await formRef.value.validate()
+  return form.value
 }
 
 defineExpose({
@@ -43,15 +42,29 @@ defineExpose({
 </script>
 
 <template>
-  <el-form ref="formRef" :model="form" :rules="rules">
-    <el-form-item label="角色名称" prop="name">
-      <el-input v-model="form.name" placeholder="请输入角色名称" />
+  <el-form
+    ref="formRef"
+    :model="form"
+    :rules="rules"
+    label-width="5rem"
+    label-position="left"
+  >
+    <el-form-item label="角色名称" prop="roleName">
+      <el-input v-model="form.roleName" placeholder="请输入角色名称" />
     </el-form-item>
 
-    <el-form-item label="权限" prop="name">
+    <el-form-item label="权限标识" prop="permCode">
+      <el-input
+        v-model="form.permCode"
+        placeholder="请输入权限标识"
+        maxlength="50"
+      />
+    </el-form-item>
+
+    <el-form-item label="权限" prop="menuIds">
       <el-tree-select
-        v-model="form.name"
-        :data="data"
+        v-model="form.menuIds"
+        :data="menus"
         multiple
         :render-after-expand="false"
         show-checkbox

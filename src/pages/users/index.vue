@@ -33,7 +33,7 @@ const onAddUser = () => {
   showDialog({
     template: () => import('./components/AddOrModifyUserTemplate.vue'),
     title: '新增用户',
-    width: '40rem'
+    width: '30rem'
   })
 }
 
