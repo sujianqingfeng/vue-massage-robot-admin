@@ -28,7 +28,8 @@ export const fetchLogoutApi = () => requestDelete('/logout')
 // === 系统用户模块 ===
 
 // 新增用户
-export const fetchAddUserApi = (data) => requestPost('/auth/admin', data)
+export const fetchAddUserApi = (data) =>
+  requestPost('/auth/admin', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
 
 // 编辑用户
 export const fetchModifyUserApi = (data) => requestPut('/auth/admin', data)

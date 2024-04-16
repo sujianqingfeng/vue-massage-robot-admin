@@ -59,7 +59,7 @@ export const useRequestList = ({
   })
 
   const finished = ref(false)
-  const total = ref('')
+  const total = ref(0)
 
   const {
     loading,

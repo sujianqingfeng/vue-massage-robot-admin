@@ -1,21 +1,24 @@
 <script setup>
+import { useUserStatusOptions } from './use-users'
+import { fetchAddUserApi, fetchUserListApi } from '~/api'
+
 const zh = useZh()
-const { showDialog } = useTemplateDialog()
+const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
+const { mapUserStatusLabel } = useUserStatusOptions()
 
-const data = ref([
-  { orderNo: '123', no: '222' },
-  { orderNo: '123', no: '222' }
-])
+const { list, pagination, fetchListApi, loading, total, resetPagination } =
+  useRequestList({
+    apiFn: fetchUserListApi
+  })
 
-const { queryForm, onReset } = useQuery({
+const { queryForm, onReset, onQuery } = useQuery({
   defaultForm: {
-    test: ''
-  }
+    status: '',
+    keywords: ''
+  },
+  fetchListApi,
+  resetPagination
 })
-
-const onQuery = () => {
-  console.log('query', queryForm.value)
-}
 
 const onDelete = () => {
   ElMessageBox.confirm('你确定删除吗?', '', {
@@ -33,7 +36,12 @@ const onAddUser = () => {
   showDialog({
     template: () => import('./components/AddOrModifyUserTemplate.vue'),
     title: '新增用户',
-    width: '30rem'
+    width: '30rem',
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddUserApi,
+      successMessage: '新增成功',
+      onSuccess: onQuery
+    })
   })
 }
 
@@ -41,13 +49,18 @@ const onModifyUser = () => {
   showDialog({
     template: () => import('./components/AddOrModifyUserTemplate.vue'),
     title: '编辑用户',
-    width: '40rem'
+    width: '30rem'
   })
 }
 </script>
 
 <template>
-  <Scaffold title="用户管理">
+  <Scaffold
+    title="用户管理"
+    :pagination="pagination"
+    :total="total"
+    @pagination-change="onQuery"
+  >
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
@@ -80,15 +93,16 @@ const onModifyUser = () => {
     </template>
 
     <template #table="{ height }">
-      <el-table :height="height + 'px'" :data="data">
-        <el-table-column prop="no" label="登录账号" />
-        <el-table-column label="用户姓名" />
-        <el-table-column label="角色" />
+      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+        <el-table-column label="登录账号" prop="account" />
+        <el-table-column label="用户姓名" prop="adminName" />
+        <el-table-column label="角色" prop="roleName" />
         <el-table-column label="所属单位" />
         <el-table-column label="设备状态">
           <template #default="{ row }">
-            <el-tag v-if="row.status === 'normal'" type="success">正常</el-tag>
-            <el-tag v-else type="danger">异常</el-tag>
+            <el-tag :type="row.status.code === 1 ? 'success' : 'danger'">
+              {{ mapUserStatusLabel(row.status.code) }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="330">
