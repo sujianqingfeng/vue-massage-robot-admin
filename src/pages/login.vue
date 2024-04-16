@@ -1,23 +1,51 @@
 <script setup>
+import { fetchLoginApi, fetchCaptchaApi } from '~/api'
+
+const { fetchApi: fetchLogin, loading } = useRequest({
+  apiFn: fetchLoginApi
+})
+
 const formRef = ref(null)
 const remember = ref(false)
+const captchaSource = ref('')
+
 const form = ref({
-  account: '',
+  username: '',
   password: '',
-  code: ''
+  captchaCode: '',
+  captchaKey: ''
 })
 
 const rules = {
-  account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+  username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-  code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+  captchaCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
 }
 
 const router = useRouter()
+const token = useStorage('token', '')
 const submit = async () => {
-  router.push('/dashboard')
   await formRef.value?.validate()
+  const { error, data } = await fetchLogin(form.value)
+  if (error) {
+    return
+  }
+  const { accessToken } = data
+  token.value = accessToken
+  router.push('/dashboard')
 }
+
+const fetchCaptcha = async () => {
+  const { error, data } = await fetchCaptchaApi()
+  if (error) {
+    return
+  }
+  const { captchaKey, captchaBase64 } = data
+  form.value.captchaKey = captchaKey
+  captchaSource.value = captchaBase64
+}
+
+fetchCaptcha()
 </script>
 
 <template>
@@ -33,9 +61,9 @@ const submit = async () => {
       <div class="w-117.5 px-15 py-20">
         <div class="font-bold text-5 leading-5.8 mb-5">账号登录</div>
         <el-form ref="formRef" :model="form" :rules="rules">
-          <el-form-item prop="account">
+          <el-form-item prop="username">
             <el-input
-              v-model="form.account"
+              v-model="form.username"
               class="h-11.5"
               placeholder="请输入账号"
             >
@@ -58,16 +86,17 @@ const submit = async () => {
             </el-input>
           </el-form-item>
 
-          <el-form-item prop="code">
+          <el-form-item prop="captchaCode">
             <div class="w-full flex items-center gap-1.5">
               <el-input
-                v-model="form.code"
+                v-model="form.captchaCode"
                 class="flex-auto h-11.5"
                 placeholder="请输入图形验证码"
               />
               <img
-                class="w-30 h-11.5 rounded-1.5"
-                src="https://picsum.photos/30/11"
+                class="w-30 h-11.5 rounded-1.5 cursor-pointer"
+                :src="captchaSource"
+                @click="fetchCaptcha"
               />
             </div>
           </el-form-item>
@@ -80,7 +109,12 @@ const submit = async () => {
             </el-checkbox>
           </el-form-item>
           <el-form-item>
-            <el-button class="w-full" type="primary" @click="submit">
+            <el-button
+              :loading="loading"
+              class="w-full"
+              type="primary"
+              @click="submit"
+            >
               登录
             </el-button>
           </el-form-item>

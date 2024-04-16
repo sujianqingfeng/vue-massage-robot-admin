@@ -4,18 +4,22 @@ import {
   createExtractDataInterceptor,
   createFilterEmptyInterceptor,
   createInnerRequestInterceptor,
-  createSerializeInterceptor,
-  createRedirectInterceptor
+  createRedirectInterceptor,
+  createSerializeInterceptor
 } from '@sujian/request'
 
 const request = createAxios({
-  baseURL: ''
+  baseURL: '/linghuRobot',
+  headers: {
+    'content-type': 'application/x-www-form-urlencoded'
+  }
 })
 
 const headerInterceptor = createInnerRequestInterceptor([
   (config) => {
     if (config.headers) {
-      config.headers['token'] = JSON.stringify({})
+      const token = localStorage.getItem('token')
+      config.headers['Authorization'] = `Bearer ${token}`
     }
     return config
   }
@@ -24,13 +28,21 @@ const headerInterceptor = createInnerRequestInterceptor([
 const errorMessageInterceptor = createErrorMessageInterceptor({
   isInvalid(res) {
     const { code, msg } = res.data || {}
-    const isValid = code !== '0'
+    const isValid = ['4201', '4202'].includes(code)
     if (!isValid) {
       return msg
     }
   },
   showMessage(msg) {
     console.log('msg', msg)
+    if (typeof msg === 'string') {
+      ElMessage.error(msg)
+      return
+    }
+    if (typeof msg === 'object' && msg.response) {
+      ElMessage.error(msg.response.data?.msg)
+      return
+    }
   }
 })
 
@@ -65,20 +77,22 @@ request
     extractDataInterceptor
   )
 
-const createTryWrapper = async (fn, ...rest) => {
-  const wrapper = {
-    data: null,
-    error: null
-  }
+const createTryWrapper = (fn) => {
+  return async (...rest) => {
+    const wrapper = {
+      data: null,
+      error: null
+    }
 
-  try {
-    const { data = {} } = await fn(...rest)
-    wrapper.data = data
-  } catch (error) {
-    wrapper.error = error
-  }
+    try {
+      const data = await fn(...rest)
+      wrapper.data = data
+    } catch (error) {
+      wrapper.error = error
+    }
 
-  return wrapper
+    return wrapper
+  }
 }
 
 export const requestGet = createTryWrapper(request.get)

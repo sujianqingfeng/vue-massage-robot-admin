@@ -33,5 +33,13 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     }),
     VueDevTools()
-  ]
+  ],
+  server: {
+    proxy: {
+      '/linghuRobot': {
+        target: 'https://8q57s08803.vicp.fun',
+        changeOrigin: true
+      }
+    }
+  }
 })
