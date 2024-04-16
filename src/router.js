@@ -10,6 +10,7 @@ const router = createRouter({
     {
       path: '/',
       component: () => import('./pages/index.vue'),
+      redirect: '/dashboard',
       children: [
         {
           path: '/dashboard',

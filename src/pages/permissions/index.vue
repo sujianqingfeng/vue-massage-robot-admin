@@ -1,4 +1,8 @@
 <script setup>
+import DetailDrawer from './components/DetailDrawer.vue'
+
+const detailDrawerRef = ref(null)
+
 const zh = useZh()
 const { showDialog } = useTemplateDialog()
 
@@ -27,6 +31,10 @@ const onDelete = () => {
       message: 'Delete completed'
     })
   })
+}
+
+const onDetail = () => {
+  detailDrawerRef.value.show()
 }
 
 const onAddPermission = () => {
@@ -87,6 +95,10 @@ const onDistributionPermission = () => {
         </el-table-column>
         <el-table-column label="操作" width="330">
           <template #default="{ row }">
+            <el-button link type="primary" @click="onDetail(row)">
+              查看
+            </el-button>
+
             <el-button link type="primary" @click="onModifyDevice(row)">
               编辑
             </el-button>
@@ -103,6 +115,10 @@ const onDistributionPermission = () => {
           </template>
         </el-table-column>
       </el-table>
+    </template>
+
+    <template #footer>
+      <DetailDrawer ref="detailDrawerRef" />
     </template>
   </Scaffold>
 </template>

@@ -1,7 +1,27 @@
 <script setup>
+import DetailDrawer from './components/DetailDrawer.vue'
+
+const detailDrawerRef = ref(null)
 const data = ref([{}])
 
-const onDetail = () => {}
+const onDetail = () => {
+  detailDrawerRef.value.show()
+}
+
+const currentShopIndex = ref(0)
+
+const shops = ref([
+  {
+    name: '店铺名称'
+  },
+  {
+    name: '店铺名称'
+  }
+])
+
+const onShopItem = (index) => {
+  currentShopIndex.value = index
+}
 </script>
 
 <template>
@@ -12,8 +32,15 @@ const onDetail = () => {}
 
     <div class="flex flex-auto">
       <div class="w-50 border-r">
-        <div class="text-3 font-bold p-2 cursor-pointer">店铺名称</div>
-        <div class="text-3 font-bold p-2 bg-#0083FF/10">店铺名称</div>
+        <div
+          v-for="(shop, index) in shops"
+          :key="index"
+          :class="{ 'bg-#0083FF/10': index === currentShopIndex }"
+          class="text-3 font-bold p-2 cursor-pointer"
+          @click="onShopItem(index)"
+        >
+          {{ shop.name }}
+        </div>
       </div>
       <div class="flex-auto flex flex-col p-2">
         <div class="flex-auto">
@@ -42,5 +69,7 @@ const onDetail = () => {}
         </div>
       </div>
     </div>
+
+    <DetailDrawer ref="detailDrawerRef" />
   </div>
 </template>
