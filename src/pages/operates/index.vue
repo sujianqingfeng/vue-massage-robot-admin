@@ -65,7 +65,12 @@ const goToShops = () => {
 </script>
 
 <template>
-  <Scaffold title="运营商管理" :pagination="pagination" :total="total">
+  <Scaffold
+    title="运营商管理"
+    :pagination="pagination"
+    :total="total"
+    @pagination-change="onQuery"
+  >
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>

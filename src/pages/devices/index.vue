@@ -1,35 +1,47 @@
 <script setup>
 import DetailDrawer from './components/DetailDrawer.vue'
+import { useDeviceStatusColors } from './use-devices'
+import {
+  fetchAddOrModifyDeviceApi,
+  fetchDeleteDeviceApi,
+  fetchDeviceListApi
+} from '~/api'
 
 const detailDrawerRef = ref(null)
 
 const zh = useZh()
-const { showDialog } = useTemplateDialog()
+const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { selections, onSelectionChange } = useElementPlusTable()
+const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const data = ref([
-  { orderNo: '123', no: '222' },
-  { orderNo: '123', no: '222' }
-])
-
-const { queryForm, onReset } = useQuery({
-  defaultForm: {
-    test: ''
-  }
+const { mapLabel: mapStatusLabel, getOptions: getStatusOptions } = useOptions({
+  ON: '在线',
+  OFF: '离线',
+  FAULT: '故障'
 })
+const statusColors = useDeviceStatusColors()
 
-const onQuery = () => {
-  console.log('query', queryForm.value)
-}
+const { list, pagination, fetchListApi, loading, total, resetPagination } =
+  useRequestList({
+    apiFn: fetchDeviceListApi
+  })
+
+const { queryForm, onReset, onQuery } = useQuery({
+  defaultForm: {
+    equipNo: '',
+    storeName: '',
+    eqState: ''
+  },
+  fetchListApi,
+  resetPagination
+})
 
 const router = useRouter()
 
-const onDelete = () => {
-  ElMessageBox.confirm('你确定删除吗?', '', {
-    ...zh.popconfirm,
-    type: 'warning'
-  }).then(() => {
-    ElMessage.success('Delete completed')
+const onDelete = ({ id }) => {
+  apiDeleteConfirm({
+    apiFn: () => fetchDeleteDeviceApi(id),
+    onSuccess: onQuery
   })
 }
 
@@ -61,8 +73,8 @@ const onBatchUpdateSoftware = () => {
   ElMessage.warning(`已选择${length}个`)
 }
 
-const onDetail = () => {
-  detailDrawerRef.value.show()
+const onDetail = ({ id }) => {
+  detailDrawerRef.value.show({ id })
 }
 
 const onGoToRecord = () => {
@@ -82,15 +94,26 @@ const onAddDevice = () => {
   showDialog({
     template: () => import('./components/AddOrModifyDeviceTemplate.vue'),
     title: '新增设备',
-    width: '40rem'
+    width: '30rem',
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddOrModifyDeviceApi,
+      successMessage: '新增成功',
+      onSuccess: onQuery
+    })
   })
 }
 
-const onModifyDevice = () => {
+const onModifyDevice = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyDeviceTemplate.vue'),
     title: '编辑设备',
-    width: '40rem'
+    width: '30rem',
+    showParams: { id },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddOrModifyDeviceApi,
+      successMessage: '编辑成功',
+      onSuccess: onQuery
+    })
   })
 }
 
@@ -98,7 +121,7 @@ const onDeviceFeature = () => {
   showDialog({
     template: () => import('./components/DeviceFeatureTemplate.vue'),
     title: '设备使能',
-    width: '40rem'
+    width: '30rem'
   })
 }
 
@@ -106,28 +129,34 @@ const onBatchDeviceFeature = () => {
   showDialog({
     template: () => import('./components/DeviceFeatureTemplate.vue'),
     title: '批量设备使能',
-    width: '40rem'
+    width: '30rem'
   })
 }
 </script>
 
 <template>
-  <Scaffold title="设备管理">
+  <Scaffold
+    title="设备管理"
+    :pagination="pagination"
+    :total="total"
+    @pagination-change="onQuery"
+  >
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="机器编号" />
+          <el-input v-model="queryForm.equipNo" placeholder="机器编号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="所属门店" />
+          <el-input v-model="queryForm.storeName" placeholder="所属门店" />
         </QueryItem>
 
         <QueryItem>
-          <el-select v-model="queryForm.test" placeholder="设备状态">
-            <el-option label="全部" value="all" />
-            <el-option label="待支付" value="unpaid" />
-          </el-select>
+          <SelectWithOptions
+            v-model="queryForm.eqState"
+            placeholder="设备状态"
+            :options="getStatusOptions()"
+          />
         </QueryItem>
       </Query>
     </template>
@@ -143,21 +172,23 @@ const onBatchDeviceFeature = () => {
 
     <template #table="{ height }">
       <el-table
+        v-loading="loading"
         :height="height + 'px'"
-        :data="data"
+        :data="list"
         @selection-change="onSelectionChange"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="no" label="机器编号" />
-        <el-table-column label="设备名称" />
+        <el-table-column label="机器编号" prop="equipNo" />
+        <el-table-column label="设备名称" prop="name" />
         <el-table-column label="设备状态">
           <template #default="{ row }">
-            <el-tag v-if="row.status === 'normal'" type="success">正常</el-tag>
-            <el-tag v-else type="danger">异常</el-tag>
+            <el-tag :type="statusColors[row.eqState]">
+              {{ mapStatusLabel(row.eqState) }}
+            </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="所属门店" />
-        <el-table-column label="更新时间" />
+        <el-table-column label="所属门店" prop="storeName" />
+        <el-table-column label="更新时间" prop="versionUpdateTime" />
         <el-table-column label="设备使能" width="100">
           <template #default="{ row }">
             <el-button link type="success" @click="onDeviceFeature(row)">
@@ -165,7 +196,7 @@ const onBatchDeviceFeature = () => {
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column label="当前软件版本" />
+        <el-table-column label="当前软件版本" prop="eqVersion" />
         <el-table-column label="更新软件">
           <template #default="{ row }">
             <span

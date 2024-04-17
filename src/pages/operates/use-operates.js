@@ -15,7 +15,8 @@ export const useOperatorDetail = () => {
 export const useOperatorOptions = () => {
   const { result: operatorOptions } = useRequest({
     apiFn: fetchOperatorAllApi,
-    autoFetch: true
+    autoFetch: true,
+    defaultResult: []
   })
 
   return {

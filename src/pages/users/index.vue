@@ -1,10 +1,21 @@
 <script setup>
 import { useUserStatusOptions } from './use-users'
-import { fetchAddUserApi, fetchUserListApi } from '~/api'
+import {
+  fetchAddOrModifyUserApi,
+  fetchDeleteUserApi,
+  fetchRoleOptionsApi,
+  fetchUserListApi
+} from '~/api'
 
-const zh = useZh()
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
-const { mapUserStatusLabel } = useUserStatusOptions()
+const { mapUserStatusLabel, getUserStatusOptions } = useUserStatusOptions()
+const { apiDeleteConfirm } = useApiDeleteConfirm()
+
+const { result: roleOptions } = useRequest({
+  apiFn: fetchRoleOptionsApi,
+  autoFetch: true,
+  defaultResult: []
+})
 
 const { list, pagination, fetchListApi, loading, total, resetPagination } =
   useRequestList({
@@ -13,22 +24,21 @@ const { list, pagination, fetchListApi, loading, total, resetPagination } =
 
 const { queryForm, onReset, onQuery } = useQuery({
   defaultForm: {
-    status: '',
-    keywords: ''
+    adminNo: '',
+    account: '',
+    adminName: '',
+    roleNo: '',
+    depart: '',
+    status: ''
   },
   fetchListApi,
   resetPagination
 })
 
-const onDelete = () => {
-  ElMessageBox.confirm('你确定删除吗?', '', {
-    ...zh.popconfirm,
-    type: 'warning'
-  }).then(() => {
-    ElMessage({
-      type: 'success',
-      message: 'Delete completed'
-    })
+const onDelete = ({ id }) => {
+  apiDeleteConfirm({
+    apiFn: () => fetchDeleteUserApi({ ids: [id] }),
+    onSuccess: onQuery
   })
 }
 
@@ -38,18 +48,24 @@ const onAddUser = () => {
     title: '新增用户',
     width: '30rem',
     onConfirm: createDialogTemplateApiConfirm({
-      apiFn: fetchAddUserApi,
+      apiFn: fetchAddOrModifyUserApi,
       successMessage: '新增成功',
       onSuccess: onQuery
     })
   })
 }
 
-const onModifyUser = () => {
+const onModifyUser = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyUserTemplate.vue'),
     title: '编辑用户',
-    width: '30rem'
+    width: '30rem',
+    showParams: { id },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddOrModifyUserApi,
+      successMessage: '编辑成功',
+      onSuccess: onQuery
+    })
   })
 }
 </script>
@@ -64,15 +80,19 @@ const onModifyUser = () => {
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="登录账号" />
+          <el-input v-model="queryForm.account" placeholder="登录账号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="用户姓名" />
+          <el-input v-model="queryForm.adminName" placeholder="用户姓名" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="角色" />
+          <SelectWithOptions
+            v-model="queryForm.roleNo"
+            placeholder="角色"
+            :options="roleOptions"
+          />
         </QueryItem>
 
         <QueryItem>
@@ -80,10 +100,11 @@ const onModifyUser = () => {
         </QueryItem>
 
         <QueryItem>
-          <el-select v-model="queryForm.test" placeholder="状态">
-            <el-option label="全部" value="all" />
-            <el-option label="待支付" value="unpaid" />
-          </el-select>
+          <SelectWithOptions
+            v-model="queryForm.status"
+            :options="getUserStatusOptions(true)"
+            placeholder="状态"
+          />
         </QueryItem>
       </Query>
     </template>
@@ -97,7 +118,7 @@ const onModifyUser = () => {
         <el-table-column label="登录账号" prop="account" />
         <el-table-column label="用户姓名" prop="adminName" />
         <el-table-column label="角色" prop="roleName" />
-        <el-table-column label="所属单位" />
+        <el-table-column label="所属单位" prop="departName" />
         <el-table-column label="设备状态">
           <template #default="{ row }">
             <el-tag :type="row.status.code === 1 ? 'success' : 'danger'">
@@ -105,7 +126,7 @@ const onModifyUser = () => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="330">
+        <el-table-column label="操作">
           <template #default="{ row }">
             <el-button link type="primary" @click="onModifyUser(row)">
               编辑

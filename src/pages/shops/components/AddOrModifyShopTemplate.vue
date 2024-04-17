@@ -24,7 +24,7 @@ const { options: typeOptions } = useDictOptions('store_category')
 const { operatorOptions } = useOperatorOptions()
 const { detail, fetchShopDetail } = useShopDetail()
 
-const show = async ({ id }) => {
+const show = async ({ id } = {}) => {
   if (id) {
     await fetchShopDetail(id)
     form.value = detail.value
@@ -44,17 +44,35 @@ defineExpose({
 </script>
 
 <template>
-  <el-form ref="formRef" :model="form" :rules="rules">
+  <el-form
+    ref="formRef"
+    :model="form"
+    :rules="rules"
+    label-position="left"
+    label-width="7rem"
+  >
     <el-form-item label="门店/个体名称" prop="name">
-      <el-input v-model="form.name" placeholder="请输入门店/个体名称" />
+      <el-input
+        v-model="form.name"
+        placeholder="请输入门店/个体名称"
+        maxlength="30"
+      />
     </el-form-item>
 
     <el-form-item label="负责人" prop="principal">
-      <el-input v-model="form.principal" placeholder="请输入负责人" />
+      <el-input
+        v-model="form.principal"
+        placeholder="请输入负责人"
+        maxlength="20"
+      />
     </el-form-item>
 
     <el-form-item label="手机号码" prop="cellPhone">
-      <el-input v-model="form.cellPhone" placeholder="请输入手机号码" />
+      <el-input
+        v-model="form.cellPhone"
+        placeholder="请输入手机号码"
+        maxlength="11"
+      />
     </el-form-item>
 
     <el-form-item label="类型" prop="storeType">
@@ -66,7 +84,11 @@ defineExpose({
     </el-form-item>
 
     <el-form-item label="地址" prop="address">
-      <el-input v-model="form.address" placeholder="请输入地址" />
+      <el-input
+        v-model="form.address"
+        placeholder="请输入地址"
+        maxlength="50"
+      />
     </el-form-item>
 
     <el-form-item label="运营商" prop="operatorNo">

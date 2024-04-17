@@ -12,10 +12,10 @@ export const useDictOptions = (dicId) => {
 
   const options = computed(() =>
     result.value.map((item) => {
-      const { dictLabel, dictValue } = item
+      const { dicLabel, dicValue } = item
       return {
-        label: dictLabel,
-        value: dictValue
+        label: dicLabel,
+        value: dicValue
       }
     })
   )

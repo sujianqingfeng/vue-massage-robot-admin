@@ -28,7 +28,7 @@ export const fetchLogoutApi = () => requestDelete('/logout')
 // === 系统用户模块 ===
 
 // 新增用户
-export const fetchAddUserApi = (data) =>
+export const fetchAddOrModifyUserApi = (data) =>
   requestPost('/auth/admin', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
 
 // 编辑用户
@@ -38,7 +38,8 @@ export const fetchModifyUserApi = (data) => requestPut('/auth/admin', data)
 export const fetchUserListApi = (params) => requestGet('/auth/admin', params)
 
 // 删除用户 批量同
-export const fetchDeleteUserApi = (data) => requestDelete('/auth/admin', data)
+export const fetchDeleteUserApi = (data) =>
+  requestDelete('/auth/admin', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
 
 // 查询用户表单数据
 export const fetchUserDetailApi = (id) => requestGet(`/auth/admin/${id}`)
@@ -99,20 +100,20 @@ export const fetchOperatorAllApi = () => requestGet('/operator/list')
 
 // === 门店模块 ===
 
-// 门店分页列表复制接口复制文档复制地址
+// 门店分页列表
 export const fetchShopListApi = (params) => requestGet('/store', params)
 
-// 门店新增、编辑复制接口复制文档复制地址
+// 门店新增、编辑
 export const fetchAddOrModifyShopApi = (data) =>
   requestPost('/store', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
 
-// 查看门店信息表单数据复制接口复制文档复制地址
+// 查看门店信息表单数据
 export const fetchShopDetailApi = (id) => requestGet(`/store/${id}`)
 
-// 删除复制接口复制文档复制地址
+// 删除
 export const fetchDeleteShopApi = (id) => requestDelete(`/store/${id}`)
 
-// 门店列表复制接口复制文档复制地址
+// 门店列表
 export const fetchShopAllApi = () => requestGet('/store/list')
 
 // === 字典模块 ===
@@ -120,3 +121,18 @@ export const fetchShopAllApi = () => requestGet('/store/list')
 // 获取字典数据列表
 export const fetchDictionaryListApi = (params) =>
   requestGet('/dictionary/list', params)
+
+// === 设备管理模块 ===
+
+// 设备分页列表
+export const fetchDeviceListApi = (params) => requestGet('/equipment', params)
+
+// 设备新增、编辑
+export const fetchAddOrModifyDeviceApi = (data) =>
+  requestPost('/equipment', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
+
+//设备表单数据
+export const fetchDeviceDetailApi = (id) => requestGet(`/equipment/${id}`)
+
+// 删除
+export const fetchDeleteDeviceApi = (id) => requestDelete(`/equipment/${id}`)

@@ -3,10 +3,10 @@ export const useOptions = (map) => {
     return map[value]
   }
 
-  const getOptions = () => {
+  const getOptions = (isNumber = false) => {
     return Object.entries(map).map(([value, label]) => {
       return {
-        value,
+        value: isNumber ? Number(value) : value,
         label
       }
     })

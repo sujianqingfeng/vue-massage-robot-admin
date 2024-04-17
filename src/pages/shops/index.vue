@@ -5,6 +5,7 @@ import {
   fetchShopListApi
 } from '~/api'
 
+const { options: typeOptions } = useDictOptions('store_category')
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 
 const { apiDeleteConfirm } = useApiDeleteConfirm()
@@ -16,10 +17,12 @@ const { list, pagination, fetchListApi, loading, total, resetPagination } =
 
 const { queryForm, onReset, onQuery } = useQuery({
   defaultForm: {
+    name: '',
+    operatorName: '',
     principal: '',
     cellPhone: '',
-    address: '',
-    name: ''
+    storeType: '',
+    address: ''
   },
   fetchListApi,
   resetPagination
@@ -53,7 +56,7 @@ const onModifyShop = ({ id }) => {
     showParams: { id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyShopApi,
-      successMessage: '新增成功',
+      successMessage: '编辑成功',
       onSuccess: onQuery
     })
   })
@@ -66,34 +69,56 @@ const onGoToDeviceList = () => {
 </script>
 
 <template>
-  <Scaffold title="门店管理" :pagination="pagination" :total="total">
+  <Scaffold
+    title="门店管理"
+    :pagination="pagination"
+    :total="total"
+    @pagination-change="onQuery"
+  >
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="门店/个别名称" />
+          <el-input
+            v-model="queryForm.name"
+            placeholder="门店/个别名称"
+            maxlength="30"
+          />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="负责人" />
+          <el-input
+            v-model="queryForm.principal"
+            placeholder="负责人"
+            maxlength="20"
+          />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="手机号码" />
+          <el-input
+            v-model="queryForm.cellPhone"
+            placeholder="手机号码"
+            maxlength="11"
+          />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="运营商" />
+          <el-input v-model="queryForm.operatorName" placeholder="运营商" />
         </QueryItem>
 
         <QueryItem>
-          <el-select v-model="queryForm.test" placeholder="类型">
-            <el-option label="全部" value="all" />
-            <el-option label="待支付" value="unpaid" />
-          </el-select>
+          <SelectWithOptions
+            v-model="queryForm.storeType"
+            :options="typeOptions"
+            placeholder="类型"
+          />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="地址" />
+          <el-input
+            v-model="queryForm.address"
+            placeholder="地址"
+            maxlength="50"
+          />
         </QueryItem>
       </Query>
     </template>
@@ -104,12 +129,12 @@ const onGoToDeviceList = () => {
 
     <template #table="{ height }">
       <el-table v-loading="loading" :height="height + 'px'" :data="list">
-        <el-table-column prop="no" label="门店/个体名称" />
-        <el-table-column label="负责人" />
-        <el-table-column label="手机号码" />
-        <el-table-column label="类型" />
-        <el-table-column label="运营商" />
-        <el-table-column label="地址" />
+        <el-table-column label="门店/个体名称" prop="name" width="120" />
+        <el-table-column label="负责人" prop="principal" />
+        <el-table-column label="手机号码" prop="cellPhone" />
+        <el-table-column label="类型" prop="storeType" />
+        <el-table-column label="运营商" prop="operatorName" />
+        <el-table-column label="地址" prop="address" />
         <el-table-column label="所有设备">
           <template #default="{ row }">
             <el-button link type="primary" @click="onGoToDeviceList(row)">
@@ -118,7 +143,7 @@ const onGoToDeviceList = () => {
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="330">
+        <el-table-column label="操作">
           <template #default="{ row }">
             <el-button link type="primary" @click="onModifyShop(row)">
               编辑
