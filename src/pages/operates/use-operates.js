@@ -1,4 +1,4 @@
-import { fetchOperatorDetailApi } from '~/api'
+import { fetchOperatorAllApi, fetchOperatorDetailApi } from '~/api'
 
 export const useOperatorDetail = () => {
   const { result: detail, fetchApi: fetchOperatorDetail } = useRequest({
@@ -9,5 +9,16 @@ export const useOperatorDetail = () => {
   return {
     detail,
     fetchOperatorDetail
+  }
+}
+
+export const useOperatorOptions = () => {
+  const { result: operatorOptions } = useRequest({
+    apiFn: fetchOperatorAllApi,
+    autoFetch: true
+  })
+
+  return {
+    operatorOptions
   }
 }

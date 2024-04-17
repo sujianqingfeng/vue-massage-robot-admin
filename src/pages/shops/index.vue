@@ -1,36 +1,34 @@
 <script setup>
-const zh = useZh()
-const { showDialog } = useTemplateDialog()
+import {
+  fetchAddOrModifyShopApi,
+  fetchDeleteShopApi,
+  fetchShopListApi
+} from '~/api'
 
-const data = ref([
-  { orderNo: '123', no: '222' },
-  { orderNo: '123', no: '222' }
-])
+const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 
-const { queryForm, onReset } = useQuery({
+const { apiDeleteConfirm } = useApiDeleteConfirm()
+
+const { list, pagination, fetchListApi, loading, total, resetPagination } =
+  useRequestList({
+    apiFn: fetchShopListApi
+  })
+
+const { queryForm, onReset, onQuery } = useQuery({
   defaultForm: {
-    test: ''
-  }
+    principal: '',
+    cellPhone: '',
+    address: '',
+    name: ''
+  },
+  fetchListApi,
+  resetPagination
 })
 
-const onQuery = () => {
-  console.log('query', queryForm.value)
-}
-
-const router = useRouter()
-const onGoToDeviceList = () => {
-  router.push('/shops/devices')
-}
-
-const onDelete = () => {
-  ElMessageBox.confirm('你确定删除吗?', '', {
-    ...zh.popconfirm,
-    type: 'warning'
-  }).then(() => {
-    ElMessage({
-      type: 'success',
-      message: 'Delete completed'
-    })
+const onDelete = ({ id }) => {
+  apiDeleteConfirm({
+    apiFn: () => fetchDeleteShopApi(id),
+    onSuccess: onQuery
   })
 }
 
@@ -38,21 +36,37 @@ const onAddShop = () => {
   showDialog({
     template: () => import('./components/AddOrModifyShopTemplate.vue'),
     title: '新增门店',
-    width: '40rem'
+    width: '30rem',
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddOrModifyShopApi,
+      successMessage: '新增成功',
+      onSuccess: onQuery
+    })
   })
 }
 
-const onModifyShop = () => {
+const onModifyShop = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyShopTemplate.vue'),
     title: '编辑门店',
-    width: '40rem'
+    width: '30rem',
+    showParams: { id },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddOrModifyShopApi,
+      successMessage: '新增成功',
+      onSuccess: onQuery
+    })
   })
+}
+
+const router = useRouter()
+const onGoToDeviceList = () => {
+  router.push('/shops/devices')
 }
 </script>
 
 <template>
-  <Scaffold title="门店管理">
+  <Scaffold title="门店管理" :pagination="pagination" :total="total">
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
@@ -89,7 +103,7 @@ const onModifyShop = () => {
     </template>
 
     <template #table="{ height }">
-      <el-table :height="height + 'px'" :data="data">
+      <el-table v-loading="loading" :height="height + 'px'" :data="list">
         <el-table-column prop="no" label="门店/个体名称" />
         <el-table-column label="负责人" />
         <el-table-column label="手机号码" />

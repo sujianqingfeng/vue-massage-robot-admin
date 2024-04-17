@@ -1,5 +1,5 @@
 <script setup>
-import { useUserStatusOptions } from '../use-users'
+import { useUserDepartOptions, useUserStatusOptions } from '../use-users'
 import { fetchRoleOptionsApi } from '~/api'
 
 const formRef = ref(null)
@@ -21,6 +21,7 @@ const rules = {
 }
 
 const { getUserStatusOptions } = useUserStatusOptions()
+useUserDepartOptions()
 
 const { result: roleOptions } = useRequest({
   apiFn: fetchRoleOptionsApi,

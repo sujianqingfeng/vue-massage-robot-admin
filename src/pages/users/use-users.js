@@ -1,3 +1,5 @@
+import { fetchOperatorWithStoreTreeApi } from '~/api'
+
 export const useUserStatusOptions = () => {
   const { mapLabel: mapUserStatusLabel, getOptions: getUserStatusOptions } =
     useOptions({
@@ -8,5 +10,16 @@ export const useUserStatusOptions = () => {
   return {
     mapUserStatusLabel,
     getUserStatusOptions
+  }
+}
+
+export const useUserDepartOptions = () => {
+  const { result } = useRequest({
+    apiFn: fetchOperatorWithStoreTreeApi,
+    autoFetch: true
+  })
+
+  return {
+    result
   }
 }

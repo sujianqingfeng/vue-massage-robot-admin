@@ -96,3 +96,27 @@ export const fetchOperatorWithStoreTreeApi = () =>
 
 // 运营商列表
 export const fetchOperatorAllApi = () => requestGet('/operator/list')
+
+// === 门店模块 ===
+
+// 门店分页列表复制接口复制文档复制地址
+export const fetchShopListApi = (params) => requestGet('/store', params)
+
+// 门店新增、编辑复制接口复制文档复制地址
+export const fetchAddOrModifyShopApi = (data) =>
+  requestPost('/store', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
+
+// 查看门店信息表单数据复制接口复制文档复制地址
+export const fetchShopDetailApi = (id) => requestGet(`/store/${id}`)
+
+// 删除复制接口复制文档复制地址
+export const fetchDeleteShopApi = (id) => requestDelete(`/store/${id}`)
+
+// 门店列表复制接口复制文档复制地址
+export const fetchShopAllApi = () => requestGet('/store/list')
+
+// === 字典模块 ===
+
+// 获取字典数据列表
+export const fetchDictionaryListApi = (params) =>
+  requestGet('/dictionary/list', params)
