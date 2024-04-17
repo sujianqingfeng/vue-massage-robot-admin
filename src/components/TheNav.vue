@@ -1,46 +1,64 @@
 <script setup>
+import { useUserStore } from '~/stores/user'
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+
 const MENUS = [
   {
     name: '信息统计',
     icon: 'i-cp-info',
-    path: '/dashboard'
+    path: '/dashboard',
+    permission: 'count'
   },
   {
     name: '订单管理',
     icon: 'i-cp-order',
-    path: '/orders'
+    path: '/orders',
+    permission: 'order'
   },
   {
     name: '设备管理',
     icon: 'i-cp-device',
-    path: '/devices'
+    path: '/devices',
+    permission: 'equipment'
   },
   {
     name: '权限管理',
     icon: 'i-cp-permission',
-    path: '/permissions'
+    path: '/permissions',
+    permission: 'permission'
   },
   {
     name: '用户管理',
     icon: 'i-cp-user',
-    path: '/users'
+    path: '/users',
+    permission: 'admin'
   },
   {
     name: '运营商管理',
     icon: 'i-cp-operating',
-    path: '/operates'
+    path: '/operates',
+    permission: 'operator'
   },
   {
     name: '门店管理',
     icon: 'i-cp-shop',
-    path: '/shops'
+    path: '/shops',
+    permission: 'store'
   },
   {
     name: '门店消费记录',
-    icon: 'i-ri-bank-card-2-fill',
-    path: '/shop-records'
+    icon: 'i-ri-bank-card-line',
+    path: '/shop-records',
+    permission: 'storeOrder'
   }
 ]
+
+const menus = computed(() =>
+  MENUS.filter((item) => {
+    return (user.value.menus || []).includes(item.permission)
+  })
+)
 
 let defaultActive = ''
 const route = useRoute()
@@ -52,7 +70,7 @@ if (current) {
 
 <template>
   <el-menu :default-active="defaultActive" router>
-    <el-menu-item v-for="item in MENUS" :key="item.path" :index="item.path">
+    <el-menu-item v-for="item in menus" :key="item.path" :index="item.path">
       <div class="flex items-center gap-2">
         <div class="text-5" :class="item.icon"></div>
         <span class="text-3.5 leading-4.5">{{ item.name }}</span>

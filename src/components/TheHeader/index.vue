@@ -1,14 +1,14 @@
 <script setup>
-import { fetchCurrentUserApi, fetchLogoutApi } from '~/api'
+import { fetchLogoutApi } from '~/api'
 import { TOKEN_KEY } from '~/constants'
+import { useUserStore } from '~/stores/user'
 
 const router = useRouter()
 const { showDialog } = useTemplateDialog()
 const token = useStorage(TOKEN_KEY, '')
-const { result: user } = useRequest({
-  apiFn: fetchCurrentUserApi,
-  autoFetch: true
-})
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
 const onChangePassword = () => {
   console.log('修改密码')
@@ -37,6 +37,8 @@ const onCommand = (val) => {
 const onRefresh = () => {
   window.location.reload()
 }
+
+userStore.fetchUser()
 </script>
 
 <template>
