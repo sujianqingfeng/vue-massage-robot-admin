@@ -4,11 +4,11 @@ import { usePermissionMenus, useRolePermissions } from '../use-permissions'
 const options = ref({})
 const treeRef = ref(null)
 const { menus } = usePermissionMenus()
-const { fetchRoleAssignMenuIds } = useRolePermissions()
+const { fetchRoleAssignMenuIds, permissions } = useRolePermissions()
 
 const show = (_options) => {
   options.value = _options
-  fetchRoleAssignMenuIds({ roleNo: _options.id })
+  fetchRoleAssignMenuIds({ roleNo: _options.roleNo })
 }
 
 const onConfirm = async () => {
@@ -26,5 +26,11 @@ defineExpose({
 </script>
 
 <template>
-  <el-tree ref="treeRef" show-checkbox :data="menus" />
+  <el-tree
+    ref="treeRef"
+    node-key="value"
+    :default-checked-keys="permissions"
+    show-checkbox
+    :data="menus"
+  />
 </template>

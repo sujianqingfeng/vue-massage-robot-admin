@@ -1,11 +1,7 @@
 export const useApiDeleteConfirm = () => {
   const zh = useZh()
 
-  const createApiDeleteConfirm = ({
-    apiFn,
-    successText = '删除成功',
-    onSuccess
-  }) => {
+  const apiDeleteConfirm = ({ apiFn, successText = '删除成功', onSuccess }) => {
     const onPositive = async () => {
       const { error } = await apiFn()
       if (error) {
@@ -23,6 +19,6 @@ export const useApiDeleteConfirm = () => {
   }
 
   return {
-    createApiDeleteConfirm
+    apiDeleteConfirm
   }
 }

@@ -1,31 +1,33 @@
 <script setup>
-const zh = useZh()
-const { showDialog } = useTemplateDialog()
+import {
+  fetchAddOrModifyOperatorApi,
+  fetchDeleteOperatorDApi,
+  fetchOperatorListApi
+} from '~/api'
 
-const data = ref([
-  { orderNo: '123', no: '222' },
-  { orderNo: '123', no: '222' }
-])
+const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
+const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { queryForm, onReset } = useQuery({
+const { list, pagination, fetchListApi, loading, total, resetPagination } =
+  useRequestList({
+    apiFn: fetchOperatorListApi
+  })
+
+const { queryForm, onReset, onQuery } = useQuery({
   defaultForm: {
-    test: ''
-  }
+    principal: '',
+    cellPhone: '',
+    address: '',
+    name: ''
+  },
+  fetchListApi,
+  resetPagination
 })
 
-const onQuery = () => {
-  console.log('query', queryForm.value)
-}
-
-const onDelete = () => {
-  ElMessageBox.confirm('你确定删除吗?', '', {
-    ...zh.popconfirm,
-    type: 'warning'
-  }).then(() => {
-    ElMessage({
-      type: 'success',
-      message: 'Delete completed'
-    })
+const onDelete = ({ id }) => {
+  apiDeleteConfirm({
+    apiFn: () => fetchDeleteOperatorDApi(id),
+    onSuccess: onQuery
   })
 }
 
@@ -33,15 +35,26 @@ const onAddOperate = () => {
   showDialog({
     template: () => import('./components/AddOrModifyOperateTemplate.vue'),
     title: '新增运营商',
-    width: '40rem'
+    width: '30rem',
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddOrModifyOperatorApi,
+      successMessage: '新增成功',
+      onSuccess: onQuery
+    })
   })
 }
 
-const onModifyOperate = () => {
+const onModifyOperate = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyOperateTemplate.vue'),
     title: '编辑运营商',
-    width: '40rem'
+    width: '30rem',
+    showParams: { id },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchAddOrModifyOperatorApi,
+      successMessage: '编辑成功',
+      onSuccess: onQuery
+    })
   })
 }
 
@@ -52,23 +65,23 @@ const goToShops = () => {
 </script>
 
 <template>
-  <Scaffold title="运营商管理">
+  <Scaffold title="运营商管理" :pagination="pagination" :total="total">
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="运营商名称" />
+          <el-input v-model="queryForm.name" placeholder="运营商名称" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="运营商负责人" />
+          <el-input v-model="queryForm.principal" placeholder="运营商负责人" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="手机号" />
+          <el-input v-model="queryForm.cellPhone" placeholder="手机号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="地址" />
+          <el-input v-model="queryForm.address" placeholder="地址" />
         </QueryItem>
       </Query>
     </template>
@@ -78,11 +91,11 @@ const goToShops = () => {
     </template>
 
     <template #table="{ height }">
-      <el-table :height="height + 'px'" :data="data">
-        <el-table-column prop="no" label="运营商名称" />
-        <el-table-column label="运营商负责人" />
-        <el-table-column label="手机号码" />
-        <el-table-column label="地址" />
+      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+        <el-table-column label="运营商名称" prop="name" />
+        <el-table-column label="运营商负责人" prop="principal" />
+        <el-table-column label="手机号码" prop="cellPhone" />
+        <el-table-column label="地址" prop="address" />
         <el-table-column label="所有门店">
           <template #default="{ row }">
             <el-button link type="primary" @click="goToShops(row)">

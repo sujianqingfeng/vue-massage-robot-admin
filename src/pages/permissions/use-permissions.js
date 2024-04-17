@@ -29,13 +29,14 @@ export const usePermissionMenus = () => {
 }
 
 export const useRolePermissions = () => {
-  const { result, fetchApi: fetchRoleAssignMenuIds } = useRequest({
+  const { result: permissions, fetchApi: fetchRoleAssignMenuIds } = useRequest({
     apiFn: fetchRoleAssignMenuIdsApi,
     autoFetch: false,
     defaultResult: []
   })
 
   return {
-    fetchRoleAssignMenuIds
+    fetchRoleAssignMenuIds,
+    permissions
   }
 }

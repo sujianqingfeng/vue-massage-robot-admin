@@ -74,3 +74,25 @@ export const fetchRoleAssignMenuIdsApi = (params) =>
 
 // 菜单列表
 export const fetchMenuListApi = () => requestGet('/auth/menu')
+
+// === 运营商模块 ===
+
+// 运营商分页列表
+export const fetchOperatorListApi = (params) => requestGet('/operator', params)
+
+// 运营商新增、编辑
+export const fetchAddOrModifyOperatorApi = (data) =>
+  requestPost('/operator', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
+
+// 查看运营商信息表单数据
+export const fetchOperatorDetailApi = (id) => requestGet(`/operator/${id}`)
+
+// 删除
+export const fetchDeleteOperatorDApi = (id) => requestDelete(`/operator/${id}`)
+
+// （单位下拉）运营商及门店列表
+export const fetchOperatorWithStoreTreeApi = () =>
+  requestGet('/operator/withStoreTree')
+
+// 运营商列表
+export const fetchOperatorAllApi = () => requestGet('/operator/list')

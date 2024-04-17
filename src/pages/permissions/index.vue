@@ -7,7 +7,7 @@ import { fetchAddRoleApi } from '~/api'
 const detailDrawerRef = ref(null)
 
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
-const { createApiDeleteConfirm } = useApiDeleteConfirm()
+const { apiDeleteConfirm } = useApiDeleteConfirm()
 
 const { list, pagination, fetchListApi, loading, total, resetPagination } =
   useRequestList({
@@ -29,7 +29,7 @@ const { mapLabel, getOptions } = useOptions({
 })
 
 const onDelete = ({ id }) => {
-  createApiDeleteConfirm({
+  apiDeleteConfirm({
     apiFn: () => fetchDeleteRoleApi({ ids: [id] }),
     onSuccess: onQuery
   })
@@ -66,12 +66,12 @@ const onModifyPermission = ({ id }) => {
   })
 }
 
-const onDistributionPermission = ({ id }) => {
+const onDistributionPermission = ({ roleNo, id }) => {
   showDialog({
     template: () => import('./components/DistributionPermissionTemplate.vue'),
     title: '分配权限',
     width: '30rem',
-    showParams: { id },
+    showParams: { roleNo, id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAssignMenusApi,
       successMessage: '分配权限成功',
