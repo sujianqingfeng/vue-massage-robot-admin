@@ -56,7 +56,12 @@ const onAddVersion = () => {
     </template>
 
     <template #table="{ height }">
-      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+      <el-table
+        v-loading="loading"
+        :height="height + 'px'"
+        :data="list"
+        size="small"
+      >
         <el-table-column label="最新版本" prop="name" />
         <el-table-column label="上一版本" prop="principal" />
         <el-table-column label="发布时间" prop="cellPhone" />

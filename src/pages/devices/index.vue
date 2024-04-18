@@ -194,16 +194,17 @@ const onBatchDeviceFeature = () => {
       <el-button @click="onImportDevice">EXCEL导入设备</el-button>
     </template>
 
-    <template #table="{ height }">
+    <template #table="{ height, width }">
       <el-table
         v-loading="loading"
         :height="height + 'px'"
         :data="list"
+        :style="{ width: width + 'px' }"
         @selection-change="onSelectionChange"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column label="机器编号" prop="equipNo" />
-        <el-table-column label="设备名称" prop="name" />
+        <el-table-column label="机器编号" prop="equipNo" width="120" />
+        <el-table-column label="设备名称" prop="name" width="120" />
         <el-table-column label="设备状态">
           <template #default="{ row }">
             <el-tag :type="statusColors[row.eqState]">
@@ -211,7 +212,7 @@ const onBatchDeviceFeature = () => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="所属门店" prop="storeName" />
+        <el-table-column label="所属门店" prop="storeName" width="120" />
         <el-table-column label="更新时间" prop="versionUpdateTime" />
         <el-table-column label="设备使能" width="100">
           <template #default="{ row }">
@@ -220,8 +221,8 @@ const onBatchDeviceFeature = () => {
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column label="当前软件版本" prop="eqVersion" />
-        <el-table-column label="更新软件">
+        <el-table-column label="当前软件版本" prop="eqVersion" width="120" />
+        <el-table-column label="更新软件" width="100">
           <template #default="{ row }">
             <span
               class="flex items-center gap-1 color-#24CC85 cursor-pointer"

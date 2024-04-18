@@ -29,7 +29,7 @@ defineExpose({
 </script>
 
 <template>
-  <el-table :data="data">
+  <el-table :data="data" size="small">
     <el-table-column label="导出人" />
     <el-table-column label="导出时间" />
     <el-table-column label="文件名" />

@@ -1,12 +1,21 @@
 <script setup>
-import DetailDrawer from './components/DetailDrawer.vue'
+import { fetchOrderListApi } from '~/api'
+import DetailDrawer from '~/pages/orders/components/DetailDrawer.vue'
 
 const detailDrawerRef = ref(null)
-const data = ref([{}])
 
-const onDetail = () => {
-  detailDrawerRef.value.show()
-}
+const { list, pagination, fetchListApi, loading, total, resetPagination } =
+  useRequestList({
+    apiFn: fetchOrderListApi
+  })
+
+const { queryForm, onQuery } = useQuery({
+  defaultForm: {
+    orderNo: ''
+  },
+  fetchListApi,
+  resetPagination
+})
 
 const currentShopIndex = ref(0)
 
@@ -22,6 +31,10 @@ const shops = ref([
 const onShopItem = (index) => {
   currentShopIndex.value = index
 }
+
+const onGoToDetail = ({ id }) => {
+  detailDrawerRef.value.show({ id })
+}
 </script>
 
 <template>
@@ -31,7 +44,7 @@ const onShopItem = (index) => {
     </div>
 
     <div class="flex flex-auto">
-      <div class="w-50 border-r">
+      <div class="w-30 border-r">
         <div
           v-for="(shop, index) in shops"
           :key="index"
@@ -43,33 +56,43 @@ const onShopItem = (index) => {
         </div>
       </div>
       <div class="flex-auto flex flex-col p-2">
-        <div class="flex-auto">
-          <el-table height="100%" :data="data">
-            <el-table-column label="订单号" />
-            <el-table-column label="机器编号" />
-            <el-table-column label="项目内容" />
-            <el-table-column label="创建时间" />
-            <el-table-column label="订单金额(元)" />
-            <el-table-column label="支付状态" />
-            <el-table-column label="工作开始时间" />
-            <el-table-column label="工作结束时间" />
+        <Scaffold
+          :pagination="pagination"
+          :total="total"
+          padding="0"
+          @pagination-change="onQuery"
+        >
+          <template #table="{ height, width }">
+            <el-table
+              v-loading="loading"
+              :style="{ width: width + 'px' }"
+              :height="height + 'px'"
+              :data="list"
+            >
+              <el-table-column label="订单号" prop="orderNo" />
+              <el-table-column label="机器编号" prop="equipNo" />
+              <el-table-column label="所属门店" prop="storeName" />
+              <el-table-column label="项目内容" prop="content" />
+              <el-table-column label="创建时间" prop="createTime" />
+              <el-table-column label="订单金额（元）" prop="amount" />
+              <el-table-column label="支付状态" prop="orderState.label" />
+              <el-table-column label="工作开始时间" prop="runStartTime" />
+              <el-table-column label="工作结束时间" prop="runEndTime" />
+              <el-table-column label="操作">
+                <template #default="{ row }">
+                  <el-button link type="primary" @click="onGoToDetail(row)">
+                    查看
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
 
-            <el-table-column label="操作">
-              <template #default="{ row }">
-                <el-button link type="primary" @click="onDetail(row)">
-                  查看
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-
-        <div class="flex justify-end items-center py-2">
-          <Pagination :total="100" />
-        </div>
+          <template #footer>
+            <DetailDrawer ref="detailDrawerRef" />
+          </template>
+        </Scaffold>
       </div>
     </div>
-
-    <DetailDrawer ref="detailDrawerRef" />
   </div>
 </template>

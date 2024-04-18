@@ -112,7 +112,12 @@ const onModifyUser = ({ id }) => {
     </template>
 
     <template #table="{ height }">
-      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+      <el-table
+        v-loading="loading"
+        :height="height + 'px'"
+        :data="list"
+        size="small"
+      >
         <el-table-column label="登录账号" prop="account" />
         <el-table-column label="用户姓名" prop="adminName" />
         <el-table-column label="角色" prop="roleName" />

@@ -126,14 +126,19 @@ const onGoToDeviceList = () => {
     </template>
 
     <template #table="{ height }">
-      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+      <el-table
+        v-loading="loading"
+        :height="height + 'px'"
+        :data="list"
+        size="small"
+      >
         <el-table-column label="门店/个体名称" prop="name" width="120" />
         <el-table-column label="负责人" prop="principal" />
         <el-table-column label="手机号码" prop="cellPhone" />
         <el-table-column label="类型" prop="storeType" />
         <el-table-column label="运营商" prop="operatorName" />
         <el-table-column label="地址" prop="address" />
-        <el-table-column label="所有设备">
+        <el-table-column label="所有设备" width="100">
           <template #default="{ row }">
             <el-button link type="primary" @click="onGoToDeviceList(row)">
               查看设备列表

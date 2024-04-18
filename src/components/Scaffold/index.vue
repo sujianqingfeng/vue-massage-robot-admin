@@ -9,6 +9,10 @@ defineProps({
   total: {
     type: Number,
     default: 0
+  },
+  padding: {
+    type: String,
+    default: '1.5rem'
   }
 })
 
@@ -26,7 +30,7 @@ const onPaginationChange = () => {
 </script>
 
 <template>
-  <div class="bg-white rounded-1 p-6 h-full flex flex-col">
+  <div :style="{ padding }" class="bg-white rounded-1 h-full flex flex-col">
     <slot name="query"></slot>
 
     <div class="flex justify-between items-center">

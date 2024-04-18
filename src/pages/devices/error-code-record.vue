@@ -67,7 +67,12 @@ fetchDeviceDetail(id)
     </template>
 
     <template #table="{ height }">
-      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+      <el-table
+        v-loading="loading"
+        :height="height + 'px'"
+        :data="list"
+        size="small"
+      >
         <el-table-column label="错误码" prop="faultCode" />
         <el-table-column label="错误说明" prop="faultDesc" />
         <el-table-column label="发生时间" prop="createTime" />

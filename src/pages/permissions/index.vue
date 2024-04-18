@@ -107,7 +107,12 @@ const onDistributionPermission = ({ roleNo, id }) => {
     </template>
 
     <template #table="{ height }">
-      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+      <el-table
+        v-loading="loading"
+        :height="height + 'px'"
+        :data="list"
+        size="small"
+      >
         <el-table-column label="角色名称" prop="roleName" />
         <el-table-column label="更新时间" prop="updateTime" />
         <el-table-column label="状态">
