@@ -1,29 +1,55 @@
 <script setup>
-const data = ref([])
+import { useDeviceDetail } from './use-devices'
+import { fetchDeviceFaultListApi } from '~/api'
 
-const infos = [
-  {
-    label: '机器编号',
-    value: 'fff'
-  },
-  {
-    label: '设备名称',
-    value: 'fff'
-  },
-  {
-    label: '所属门店',
-    value: 'fff'
+const route = useRoute()
+const id = route.params.id
+
+const { detail, fetchDeviceDetail } = useDeviceDetail()
+
+const { list, pagination, fetchListApi, loading, total } = useRequestList({
+  apiFn: fetchDeviceFaultListApi,
+  params: {
+    equipNo: id
   }
-]
+})
+
+const onQuery = () => {
+  fetchListApi()
+}
+
+const { options: infos } = useTransformOptions({
+  info: detail,
+  maps: [
+    {
+      label: '机器编号',
+      value: 'equipNo'
+    },
+    {
+      label: '设备名称',
+      value: 'name'
+    },
+    {
+      label: '所属门店',
+      value: 'storeNo'
+    }
+  ]
+})
 
 const router = useRouter()
 const onBack = () => {
   router.back()
 }
+
+fetchDeviceDetail(id)
 </script>
 
 <template>
-  <Scaffold>
+  <Scaffold
+    :pagination="pagination"
+    :total="total"
+    @pagination-change="onQuery"
+  >
     <template #title>
       <BackTitle title="错误码记录" @back="onBack" />
     </template>
@@ -41,10 +67,10 @@ const onBack = () => {
     </template>
 
     <template #table="{ height }">
-      <el-table :height="height + 'px'" :data="data">
-        <el-table-column label="错误码" />
-        <el-table-column label="错误说明" />
-        <el-table-column label="发生时间" />
+      <el-table v-loading="loading" :height="height + 'px'" :data="list">
+        <el-table-column label="错误码" prop="faultCode" />
+        <el-table-column label="错误说明" prop="faultDesc" />
+        <el-table-column label="发生时间" prop="createTime" />
       </el-table>
     </template>
   </Scaffold>

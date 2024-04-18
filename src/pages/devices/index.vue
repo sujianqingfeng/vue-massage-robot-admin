@@ -4,7 +4,8 @@ import { useDeviceStatusColors } from './use-devices'
 import {
   fetchAddOrModifyDeviceApi,
   fetchDeleteDeviceApi,
-  fetchDeviceListApi
+  fetchDeviceListApi,
+  fetchUpgradeSoftwareApi
 } from '~/api'
 
 const detailDrawerRef = ref(null)
@@ -13,6 +14,7 @@ const zh = useZh()
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { selections, onSelectionChange } = useElementPlusTable()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
+const { apiConfirm } = useApiConfirm()
 
 const { mapLabel: mapStatusLabel, getOptions: getStatusOptions } = useOptions({
   ON: '在线',
@@ -53,8 +55,13 @@ const onImportDevice = () => {
   console.log(ElMessage.warning('暂无实现'))
 }
 
-const onUpdateSoftware = () => {
-  console.log(ElMessage.warning('暂无实现'))
+const onUpdateSoftware = async ({ id }) => {
+  apiConfirm({
+    apiFn: () => fetchUpgradeSoftwareApi([id]),
+    confirmText: '确定更新软件?',
+    successText: '更新成功',
+    onSuccess: onQuery
+  })
 }
 
 const onBatchDownload = () => {
@@ -69,16 +76,26 @@ const onBatchDownload = () => {
 }
 
 const onBatchUpdateSoftware = () => {
-  const length = selections.value.length
-  ElMessage.warning(`已选择${length}个`)
+  apiConfirm({
+    apiFn: () => {
+      let ids = selections.value.map((item) => item.id)
+      if (!ids.length) {
+        ids = list.value.map((item) => item.id)
+      }
+      return fetchUpgradeSoftwareApi(ids)
+    },
+    confirmText: '确定批量更新软件?',
+    successText: '更新成功',
+    onSuccess: onQuery
+  })
 }
 
 const onDetail = ({ id }) => {
   detailDrawerRef.value.show({ id })
 }
 
-const onGoToRecord = () => {
-  router.push('/devices/error-code-record')
+const onGoToRecord = ({ id }) => {
+  router.push(`/devices/error-code-record/${id}`)
 }
 
 const onDownloadCenter = () => {

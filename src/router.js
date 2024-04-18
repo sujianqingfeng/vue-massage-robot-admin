@@ -28,7 +28,7 @@ const router = createRouter({
               component: () => import('./pages/devices/index.vue')
             },
             {
-              path: 'error-code-record',
+              path: 'error-code-record/:id',
               component: () => import('./pages/devices/error-code-record.vue')
             }
           ]

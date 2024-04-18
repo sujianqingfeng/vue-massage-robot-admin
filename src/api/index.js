@@ -137,6 +137,18 @@ export const fetchDeviceDetailApi = (id) => requestGet(`/equipment/${id}`)
 // 删除
 export const fetchDeleteDeviceApi = (id) => requestDelete(`/equipment/${id}`)
 
+// 更新软件（批量同）
+export const fetchUpgradeSoftwareApi = (data) =>
+  requestPost('/equipment/upgrade', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
+
+//设备使能（批量同）
+export const fetchEnableDeviceApi = (data) =>
+  requestPost('/equipment/enable', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
+
+// 设备错误码记录
+export const fetchDeviceFaultListApi = (params) =>
+  requestGet('/equipment/fault', params)
+
 // === 订单管理模块 ===
 
 // 订单分页列表

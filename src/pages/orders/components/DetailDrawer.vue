@@ -1,11 +1,10 @@
 <script setup>
-import { fetchOrderDetailApi } from '~/api';
+import { fetchOrderDetailApi } from '~/api'
 
 const [visible, toggle] = useToggle(false)
 
-
-const {result: detail, fetchApi:fetchOrderDetail } = useRequest({
-  apiFn: fetchOrderDetailApi,
+const { result: detail, fetchApi: fetchOrderDetail } = useRequest({
+  apiFn: fetchOrderDetailApi
 })
 
 const { options: infos } = useTransformOptions({
@@ -57,9 +56,7 @@ const { options: infos } = useTransformOptions({
   ]
 })
 
-
-
-const show = ({id}) => {
+const show = ({ id }) => {
   fetchOrderDetail(id)
   toggle(true)
 }
@@ -85,7 +82,7 @@ defineExpose({
           class="flex items-center text-3.5 leading-5.5"
         >
           <div class="w-22.5 color-#666666">{{ item.label }}</div>
-          <div class="color-#333333 ml-5">{{item.value}}</div>
+          <div class="color-#333333 ml-5">{{ item.value }}</div>
         </div>
       </div>
     </template>
