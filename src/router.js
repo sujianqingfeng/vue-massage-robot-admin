@@ -70,6 +70,10 @@ const router = createRouter({
         {
           path: '/shop-records',
           component: () => import('./pages/shop-records/index.vue')
+        },
+        {
+          path: '/versions',
+          component: () => import('./pages/versions/index.vue')
         }
       ]
     },

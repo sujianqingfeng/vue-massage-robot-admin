@@ -51,6 +51,12 @@ const MENUS = [
     icon: 'i-ri-bank-card-line',
     path: '/shop-records',
     permission: 'storeOrder'
+  },
+  {
+    name: '软件版本管理',
+    icon: 'i-carbon-version',
+    path: '/versions',
+    permission: 'storeOrder'
   }
 ]
 

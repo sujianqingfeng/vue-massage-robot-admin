@@ -40,6 +40,14 @@ const { queryForm, onReset, onQuery } = useQuery({
 
 const router = useRouter()
 
+const getSelectionIds = () => {
+  let ids = selections.value.map((item) => item.id)
+  if (!ids.length) {
+    ids = list.value.map((item) => item.id)
+  }
+  return ids
+}
+
 const onDelete = ({ id }) => {
   apiDeleteConfirm({
     apiFn: () => fetchDeleteDeviceApi(id),
@@ -55,15 +63,6 @@ const onImportDevice = () => {
   console.log(ElMessage.warning('暂无实现'))
 }
 
-const onUpdateSoftware = async ({ id }) => {
-  apiConfirm({
-    apiFn: () => fetchUpgradeSoftwareApi([id]),
-    confirmText: '确定更新软件?',
-    successText: '更新成功',
-    onSuccess: onQuery
-  })
-}
-
 const onBatchDownload = () => {
   const length = selections.value.length
   ElMessageBox.confirm('确定下载二维码?', '', {
@@ -71,22 +70,32 @@ const onBatchDownload = () => {
     type: 'warning'
   }).then(() => {
     ElMessage.warning(`已选择${length}个`)
-    ElMessage.success('Delete completed')
+  })
+}
+
+const onUpdateSoftware = async ({ id }) => {
+  showDialog({
+    template: () => import('./components/UpdateSoftwareTemplate.vue'),
+    title: '更新软件命令',
+    showParams: { ids: [id] },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchUpgradeSoftwareApi,
+      successMessage: '更新成功',
+      onSuccess: onQuery
+    })
   })
 }
 
 const onBatchUpdateSoftware = () => {
-  apiConfirm({
-    apiFn: () => {
-      let ids = selections.value.map((item) => item.id)
-      if (!ids.length) {
-        ids = list.value.map((item) => item.id)
-      }
-      return fetchUpgradeSoftwareApi(ids)
-    },
-    confirmText: '确定批量更新软件?',
-    successText: '更新成功',
-    onSuccess: onQuery
+  showDialog({
+    template: () => import('./components/UpdateSoftwareTemplate.vue'),
+    title: '批量更新软件命令',
+    showParams: { ids: getSelectionIds() },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchUpgradeSoftwareApi,
+      successMessage: '更新成功',
+      onSuccess: onQuery
+    })
   })
 }
 
