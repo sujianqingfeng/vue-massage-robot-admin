@@ -31,11 +31,11 @@ const items = ref([
 </script>
 
 <template>
-  <div class="flex gap-2">
+  <div class="flex gap-2 w-full">
     <div
       v-for="(item, i) in items"
       :key="i"
-      class="bg-white flex-1 p-5 rounded-1"
+      class="bg-white flex-auto p-5 rounded-1"
     >
       <div class="text-14" :class="item.icon"></div>
       <div class="text-3.5 leading-4.1 color-#0E2041 mt-5">

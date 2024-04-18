@@ -69,15 +69,35 @@ const onGoToDetail = ({ id }) => {
               :height="height + 'px'"
               :data="list"
             >
-              <el-table-column label="订单号" prop="orderNo" />
-              <el-table-column label="机器编号" prop="equipNo" />
+              <el-table-column label="订单号" prop="orderNo" width="170" />
+              <el-table-column label="机器编号" prop="equipNo" width="100" />
               <el-table-column label="所属门店" prop="storeName" />
-              <el-table-column label="项目内容" prop="content" />
+              <el-table-column label="项目内容" prop="content" width="100">
+                <template #default="{ row }">
+                  <MoreTextTooltip :text="row.content" />
+                </template>
+              </el-table-column>
               <el-table-column label="创建时间" prop="createTime" />
-              <el-table-column label="订单金额（元）" prop="amount" />
-              <el-table-column label="支付状态" prop="orderState.label" />
-              <el-table-column label="工作开始时间" prop="runStartTime" />
-              <el-table-column label="工作结束时间" prop="runEndTime" />
+              <el-table-column
+                label="订单金额（元）"
+                prop="amount"
+                width="130"
+              />
+              <el-table-column
+                label="支付状态"
+                prop="orderState.label"
+                width="80"
+              />
+              <el-table-column
+                label="工作开始时间"
+                prop="runStartTime"
+                width="110"
+              />
+              <el-table-column
+                label="工作结束时间"
+                prop="runEndTime"
+                width="110"
+              />
               <el-table-column label="操作">
                 <template #default="{ row }">
                   <el-button link type="primary" @click="onGoToDetail(row)">

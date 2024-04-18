@@ -7,7 +7,7 @@
     <div class="w-50 bg-white h-full">
       <TheNav />
     </div>
-    <div class="m-2 flex-auto">
+    <div class="m-2 flex-1 overflow-auto">
       <RouterView />
     </div>
   </div>

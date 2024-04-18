@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="bg-#F1F5F8 px-2.5 py-5 rounded-1 flex-auto overflow-auto">
+    <div class="bg-#F1F5F8 px-2.5 py-5 rounded-1 flex-auto">
       <div
         class="flex items-center bg-white rounded-12.5 text-2 h-12 mb-3.7 color-#144675"
       >
