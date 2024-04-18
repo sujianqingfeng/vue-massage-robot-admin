@@ -43,7 +43,6 @@ const onAddPermission = () => {
   showDialog({
     template: () => import('./components/AddOrModifyPermissionTemplate.vue'),
     title: '新增权限',
-    width: '30rem',
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddRoleApi,
       successMessage: '新增成功',
@@ -56,7 +55,6 @@ const onModifyPermission = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyPermissionTemplate.vue'),
     title: '编辑权限',
-    width: '30rem',
     showParams: { id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddRoleApi,
@@ -70,7 +68,6 @@ const onDistributionPermission = ({ roleNo, id }) => {
   showDialog({
     template: () => import('./components/DistributionPermissionTemplate.vue'),
     title: '分配权限',
-    width: '30rem',
     showParams: { roleNo, id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAssignMenusApi,

@@ -1,6 +1,4 @@
 <script setup>
-const emit = defineEmits(['confirm', 'cancel'])
-
 defineProps({
   loading: {
     type: Boolean,
@@ -9,10 +7,16 @@ defineProps({
   showFooter: {
     type: Boolean,
     default: true
+  },
+  width: {
+    type: String,
+    default: '30rem'
   }
 })
 
+const emit = defineEmits(['confirm', 'cancel'])
 const dialogVisible = defineModel({ type: Boolean, default: false })
+const attrs = useAttrs()
 
 const onCancel = () => {
   dialogVisible.value = false
@@ -24,7 +28,7 @@ const onConfirm = () => {
 </script>
 
 <template>
-  <el-dialog v-model="dialogVisible">
+  <el-dialog v-bind="attrs" :width="width" v-model="dialogVisible">
     <slot></slot>
 
     <template v-if="showFooter" #footer>

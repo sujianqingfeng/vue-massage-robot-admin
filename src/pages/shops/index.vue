@@ -39,7 +39,6 @@ const onAddShop = () => {
   showDialog({
     template: () => import('./components/AddOrModifyShopTemplate.vue'),
     title: '新增门店',
-    width: '30rem',
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyShopApi,
       successMessage: '新增成功',
@@ -52,7 +51,6 @@ const onModifyShop = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyShopTemplate.vue'),
     title: '编辑门店',
-    width: '30rem',
     showParams: { id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyShopApi,

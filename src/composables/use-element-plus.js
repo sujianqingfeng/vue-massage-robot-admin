@@ -13,3 +13,13 @@ export const useElementPlusTable = () => {
     onSelectionChange
   }
 }
+
+export const useDisableDateAfterToday = () => {
+  const disabledDateAfterToday = (time) => {
+    return time > new Date().getTime()
+  }
+
+  return {
+    disabledDateAfterToday
+  }
+}

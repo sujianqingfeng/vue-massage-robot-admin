@@ -20,10 +20,11 @@ echarts.use([
 
 const eChartRef = ref(null)
 
-onMounted(() => {
+
+const renderChart = ()=>{
   const myChart = echarts.init(eChartRef.value)
 
-  myChart.setOption({
+  myChart?.setOption({
     color: ['#248CFD', '#04C7B2'],
     tooltip: {
       trigger: 'axis',
@@ -107,7 +108,9 @@ onMounted(() => {
       }
     ]
   })
-})
+}
+
+onMounted(renderChart)
 </script>
 
 <template>

@@ -1,17 +1,17 @@
 <script setup>
-const emits = defineEmits(['update:start', 'update:end'])
+import dayjs from 'dayjs'
+
+const start = defineModel('start', { type: String,default:'' })
+const end = defineModel('end', { type: String,default:'' })
+
 const props = defineProps({
   valueFormat: {
     type: String,
-    default: 'HH:mm:ss'
+    default: 'YYYY-MM-DD HH:mm:ss'
   },
-  start: {
+  format: {
     type: String,
-    default: ''
-  },
-  end: {
-    type: String,
-    default: ''
+    default: 'YYYY-MM-DD'
   },
   rangeSeparator: {
     type: String,
@@ -36,34 +36,41 @@ const props = defineProps({
   type: {
     type: String,
     default: 'daterange'
+  },
+  withEndTiemOfDay: {
+    type: Boolean,
+    default: true
   }
 })
 
-const tempDate = computed({
+const dateModalValue = computed({
   get: () => {
-    return [props.start, props.end]
+    return [start.value, end.value]
   },
   set: (val) => {
     if (!val) {
-      emits('update:start', '')
-      emits('update:end', '')
+      start.value = ''
+      end.value = ''
       return
     }
 
-    emits('update:start', val[0])
-    emits('update:end', val[1])
+    const isDetailTime = props.valueFormat.includes('HH:mm:ss') && props.withEndTiemOfDay
+    start.value = val[0]
+    end.value = isDetailTime  ? dayjs(val[1]).endOf('day').format(props.valueFormat) : val[1]
   }
 })
+
+const attrs = useAttrs()
 </script>
 
 <template>
   <el-date-picker
-    v-model="tempDate"
+    v-model="dateModalValue"
     :type="type"
-    v-bind="$attrs"
+    v-bind="attrs"
     :style="{ width }"
     :clearable="clearable"
-    :format="valueFormat"
+    :format="format"
     :value-format="valueFormat"
     :range-separator="rangeSeparator"
     :start-placeholder="startPlaceholder"

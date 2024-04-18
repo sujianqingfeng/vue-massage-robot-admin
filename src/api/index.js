@@ -136,3 +136,11 @@ export const fetchDeviceDetailApi = (id) => requestGet(`/equipment/${id}`)
 
 // 删除
 export const fetchDeleteDeviceApi = (id) => requestDelete(`/equipment/${id}`)
+
+// === 订单管理模块 ===
+
+// 订单分页列表
+export const fetchOrderListApi = (params) => requestGet('/order', params)
+
+// 订单详情
+export const fetchOrderDetailApi = (id) => requestGet(`/order/${id}`)

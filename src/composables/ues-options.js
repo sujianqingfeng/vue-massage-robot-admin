@@ -1,3 +1,5 @@
+import { get } from '~/utils/basic'
+
 export const useOptions = (map) => {
   const mapLabel = (value) => {
     return map[value]
@@ -22,8 +24,8 @@ export const useTransformOptions = ({ info, maps }) => {
   const options = computed(() => {
     return maps.map((item) => {
       const newItem = { ...item }
-      if (typeof item.value === 'string') {
-        newItem.value = info.value[item.value]
+      if (typeof item.value === 'string' && item.value) {
+        newItem.value = get(info.value, item.value, item.defaultValue || '')
       }
       return newItem
     })

@@ -94,7 +94,6 @@ const onAddDevice = () => {
   showDialog({
     template: () => import('./components/AddOrModifyDeviceTemplate.vue'),
     title: '新增设备',
-    width: '30rem',
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyDeviceApi,
       successMessage: '新增成功',
@@ -107,7 +106,6 @@ const onModifyDevice = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyDeviceTemplate.vue'),
     title: '编辑设备',
-    width: '30rem',
     showParams: { id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyDeviceApi,

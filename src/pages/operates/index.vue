@@ -35,7 +35,6 @@ const onAddOperate = () => {
   showDialog({
     template: () => import('./components/AddOrModifyOperateTemplate.vue'),
     title: '新增运营商',
-    width: '30rem',
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyOperatorApi,
       successMessage: '新增成功',
@@ -48,7 +47,6 @@ const onModifyOperate = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyOperateTemplate.vue'),
     title: '编辑运营商',
-    width: '30rem',
     showParams: { id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyOperatorApi,

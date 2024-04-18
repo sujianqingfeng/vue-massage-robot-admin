@@ -46,7 +46,6 @@ const onAddUser = () => {
   showDialog({
     template: () => import('./components/AddOrModifyUserTemplate.vue'),
     title: '新增用户',
-    width: '30rem',
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyUserApi,
       successMessage: '新增成功',
@@ -59,7 +58,6 @@ const onModifyUser = ({ id }) => {
   showDialog({
     template: () => import('./components/AddOrModifyUserTemplate.vue'),
     title: '编辑用户',
-    width: '30rem',
     showParams: { id },
     onConfirm: createDialogTemplateApiConfirm({
       apiFn: fetchAddOrModifyUserApi,

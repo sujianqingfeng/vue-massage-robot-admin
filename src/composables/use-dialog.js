@@ -27,7 +27,6 @@ export const useTemplateDialog = () => {
 
     const hide = () => {
       visible.value = false
-
       unmounted()
     }
 

@@ -52,6 +52,7 @@ const onConfirm = async () => {
   await formRef.value.validate()
   const data = { ...form.value }
   data.status = +data.status
+  data.depart = data.depart.join(',')
   return data
 }
 
