@@ -47,11 +47,16 @@ export const useRequestList = ({
   autoFetch = true,
   params = {},
   defaultResult = [],
-  afterFetch = null
+  afterFetch = null,
+  autoFetchAfterReset = true
 } = {}) => {
   if (!apiFn) {
     throw new Error('apiFn is required')
   }
+
+  const form = ref({
+    ...params
+  })
 
   const pagination = ref({
     pageSize: 20,
@@ -92,15 +97,26 @@ export const useRequestList = ({
     return { error, data }
   }
 
-  if (autoFetch) {
-    fetchListApi(params)
-  }
-
   const resetPagination = () => {
+    finished.value = false
     pagination.value = {
       pageSize: 20,
       currentPage: 1
     }
+  }
+
+  const onReset = () => {
+    form.value = { ...params }
+    resetPagination()
+    autoFetchAfterReset && onQuery()
+  }
+
+  const onQuery = () => {
+    fetchListApi(form.value)
+  }
+
+  if (autoFetch) {
+    onQuery()
   }
 
   return {
@@ -109,7 +125,10 @@ export const useRequestList = ({
     pagination,
     list,
     finished,
+    form,
     fetchListApi,
-    resetPagination
+    resetPagination,
+    onReset,
+    onQuery
   }
 }

@@ -9,9 +9,9 @@
     </div>
     <div class="m-2 flex-1 overflow-auto">
       <RouterView v-slot="{ Component }">
-        <transtion name="fade">
+        <Transition name="fade">
           <component :is="Component" />
-        </transtion>
+        </Transition>
       </RouterView>
     </div>
   </div>

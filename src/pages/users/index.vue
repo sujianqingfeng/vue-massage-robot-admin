@@ -17,23 +17,18 @@ const { result: roleOptions } = useRequest({
   defaultResult: []
 })
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery, onReset, form } =
   useRequestList({
-    apiFn: fetchUserListApi
+    apiFn: fetchUserListApi,
+    params: {
+      adminNo: '',
+      account: '',
+      adminName: '',
+      roleNo: '',
+      depart: '',
+      status: ''
+    },
   })
-
-const { queryForm, onReset, onQuery } = useQuery({
-  defaultForm: {
-    adminNo: '',
-    account: '',
-    adminName: '',
-    roleNo: '',
-    depart: '',
-    status: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({
@@ -78,28 +73,28 @@ const onModifyUser = ({ id }) => {
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.account" placeholder="登录账号" />
+          <el-input v-model="form.account" placeholder="登录账号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.adminName" placeholder="用户姓名" />
+          <el-input v-model="form.adminName" placeholder="用户姓名" />
         </QueryItem>
 
         <QueryItem>
           <SelectWithOptions
-            v-model="queryForm.roleNo"
+            v-model="form.roleNo"
             placeholder="角色"
             :options="roleOptions"
           />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.test" placeholder="所属单位" />
+          <el-input v-model="form.test" placeholder="所属单位" />
         </QueryItem>
 
         <QueryItem>
           <SelectWithOptions
-            v-model="queryForm.status"
+            v-model="form.status"
             :options="getUserStatusOptions(true)"
             placeholder="状态"
           />

@@ -23,20 +23,16 @@ const { mapLabel: mapStatusLabel, getOptions: getStatusOptions } = useOptions({
 })
 const statusColors = useDeviceStatusColors()
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery, onReset, form } =
   useRequestList({
-    apiFn: fetchDeviceListApi
+    apiFn: fetchDeviceListApi,
+    params: {
+      equipNo: '',
+      storeName: '',
+      eqState: ''
+    },
   })
 
-const { queryForm, onReset, onQuery } = useQuery({
-  defaultForm: {
-    equipNo: '',
-    storeName: '',
-    eqState: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const router = useRouter()
 
@@ -168,16 +164,16 @@ const onBatchDeviceFeature = () => {
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.equipNo" placeholder="机器编号" />
+          <el-input v-model="form.equipNo" placeholder="机器编号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.storeName" placeholder="所属门店" />
+          <el-input v-model="form.storeName" placeholder="所属门店" />
         </QueryItem>
 
         <QueryItem>
           <SelectWithOptions
-            v-model="queryForm.eqState"
+            v-model="form.eqState"
             placeholder="设备状态"
             :options="getStatusOptions()"
           />

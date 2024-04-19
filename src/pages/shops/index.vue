@@ -10,23 +10,18 @@ const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery, onReset, form } =
   useRequestList({
-    apiFn: fetchShopListApi
+    apiFn: fetchShopListApi,
+    params: {
+      name: '',
+      operatorName: '',
+      principal: '',
+      cellPhone: '',
+      storeType: '',
+      address: ''
+    }
   })
-
-const { queryForm, onReset, onQuery } = useQuery({
-  defaultForm: {
-    name: '',
-    operatorName: '',
-    principal: '',
-    cellPhone: '',
-    storeType: '',
-    address: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({
@@ -77,7 +72,7 @@ const onGoToDeviceList = () => {
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
           <el-input
-            v-model="queryForm.name"
+            v-model="form.name"
             placeholder="门店/个别名称"
             maxlength="30"
           />
@@ -85,7 +80,7 @@ const onGoToDeviceList = () => {
 
         <QueryItem>
           <el-input
-            v-model="queryForm.principal"
+            v-model="form.principal"
             placeholder="负责人"
             maxlength="20"
           />
@@ -93,19 +88,19 @@ const onGoToDeviceList = () => {
 
         <QueryItem>
           <el-input
-            v-model="queryForm.cellPhone"
+            v-model="form.cellPhone"
             placeholder="手机号码"
             maxlength="11"
           />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.operatorName" placeholder="运营商" />
+          <el-input v-model="form.operatorName" placeholder="运营商" />
         </QueryItem>
 
         <QueryItem>
           <SelectWithOptions
-            v-model="queryForm.storeType"
+            v-model="form.storeType"
             :options="typeOptions"
             placeholder="类型"
           />
@@ -113,7 +108,7 @@ const onGoToDeviceList = () => {
 
         <QueryItem>
           <el-input
-            v-model="queryForm.address"
+            v-model="form.address"
             placeholder="地址"
             maxlength="50"
           />

@@ -8,21 +8,16 @@ import {
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery } =
   useRequestList({
-    apiFn: fetchOperatorListApi
+    apiFn: fetchOperatorListApi,
+    params: {
+      principal: '',
+      cellPhone: '',
+      address: '',
+      name: ''
+    }
   })
-
-const { queryForm, onReset, onQuery } = useQuery({
-  defaultForm: {
-    principal: '',
-    cellPhone: '',
-    address: '',
-    name: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({

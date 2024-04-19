@@ -8,21 +8,16 @@ import {
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery, onReset, form} =
   useRequestList({
-    apiFn: fetchOperatorListApi
+    apiFn: fetchOperatorListApi,
+    form: {
+      principal: '',
+      cellPhone: '',
+      address: '',
+      name: ''
+    }
   })
-
-const { queryForm, onReset, onQuery } = useQuery({
-  defaultForm: {
-    principal: '',
-    cellPhone: '',
-    address: '',
-    name: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({
@@ -72,19 +67,19 @@ const goToShops = () => {
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.name" placeholder="运营商名称" />
+          <el-input v-model="form.name" placeholder="运营商名称" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.principal" placeholder="运营商负责人" />
+          <el-input v-model="form.principal" placeholder="运营商负责人" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.cellPhone" placeholder="手机号" />
+          <el-input v-model="form.cellPhone" placeholder="手机号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.address" placeholder="地址" />
+          <el-input v-model="form.address" placeholder="地址" />
         </QueryItem>
       </Query>
     </template>

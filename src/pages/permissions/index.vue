@@ -9,19 +9,14 @@ const detailDrawerRef = ref(null)
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery, onReset, form } =
   useRequestList({
-    apiFn: fetchRoleListApi
+    apiFn: fetchRoleListApi,
+    params: {
+      status: '',
+      keywords: ''
+    },
   })
-
-const { queryForm, onReset, onQuery } = useQuery({
-  defaultForm: {
-    status: '',
-    keywords: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const { mapLabel, getOptions } = useOptions({
   1: '正常',
@@ -88,12 +83,12 @@ const onDistributionPermission = ({ roleNo, id }) => {
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.keywords" placeholder="角色名称" />
+          <el-input v-model="form.keywords" placeholder="角色名称" />
         </QueryItem>
 
         <QueryItem>
           <SelectWithOptions
-            v-model="queryForm.status"
+            v-model="form.status"
             clearable
             placeholder="状态"
             :options="getOptions()"

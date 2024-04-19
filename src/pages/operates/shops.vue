@@ -9,19 +9,14 @@ const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
-  useRequestList({
-    apiFn: fetchShopListApi
-  })
-
 // TODO: 参数
-const { onQuery } = useQuery({
-  defaultForm: {
-    name: ''
-  },
-  fetchListApi,
-  resetPagination
-})
+const { list, pagination,  loading, total, onQuery, } =
+  useRequestList({
+    apiFn: fetchShopListApi,
+    params: {
+      name: ''
+    }
+  })
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({

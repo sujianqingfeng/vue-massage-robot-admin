@@ -12,23 +12,18 @@ const { getOptions: getPayStatusOptions } = useOptions({
   Cancel: '取消'
 })
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery, onReset, form } =
   useRequestList({
-    apiFn: fetchOrderListApi
+    apiFn: fetchOrderListApi,
+    params: {
+      orderNo: '',
+      equipNo: '',
+      storeName: '',
+      orderState: '',
+      runStartTime: '',
+      runEndTime: ''
+    }
   })
-
-const { queryForm, onReset, onQuery } = useQuery({
-  defaultForm: {
-    orderNo: '',
-    equipNo: '',
-    storeName: '',
-    orderState: '',
-    runStartTime: '',
-    runEndTime: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const onGoToDetail = ({ id }) => {
   detailDrawerRef.value.show({ id })
@@ -45,20 +40,20 @@ const onGoToDetail = ({ id }) => {
     <template #query>
       <Query @query="onQuery" @reset="onReset">
         <QueryItem>
-          <el-input v-model="queryForm.orderNo" placeholder="订单号" />
+          <el-input v-model="form.orderNo" placeholder="订单号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.equipNo" placeholder="机器编号" />
+          <el-input v-model="form.equipNo" placeholder="机器编号" />
         </QueryItem>
 
         <QueryItem>
-          <el-input v-model="queryForm.storeName" placeholder="所属门店" />
+          <el-input v-model="form.storeName" placeholder="所属门店" />
         </QueryItem>
 
         <QueryItem>
           <SelectWithOptions
-            v-model="queryForm.orderState"
+            v-model="form.orderState"
             placeholder="支付状态"
             :options="getPayStatusOptions()"
           />
@@ -66,8 +61,8 @@ const onGoToDetail = ({ id }) => {
 
         <QueryItem width="410px">
           <DateRange
-            v-model:start="queryForm.runStartTime"
-            v-model:end="queryForm.runEndTime"
+            v-model:start="form.runStartTime"
+            v-model:end="form.runEndTime"
             :disabled-date="disabledDateAfterToday"
           />
         </QueryItem>

@@ -4,18 +4,13 @@ import DetailDrawer from '~/pages/orders/components/DetailDrawer.vue'
 
 const detailDrawerRef = ref(null)
 
-const { list, pagination, fetchListApi, loading, total, resetPagination } =
+const { list, pagination, loading, total, onQuery, form } =
   useRequestList({
-    apiFn: fetchOrderListApi
+    apiFn: fetchOrderListApi,
+    params: {
+      orderNo: ''
+    },
   })
-
-const { queryForm, onQuery } = useQuery({
-  defaultForm: {
-    orderNo: ''
-  },
-  fetchListApi,
-  resetPagination
-})
 
 const currentShopIndex = ref(0)
 

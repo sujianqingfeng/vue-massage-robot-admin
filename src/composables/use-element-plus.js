@@ -1,6 +1,5 @@
 export const useTableSelection = () => {
   const tableRef = ref(null)
-
   const selections = ref([])
 
   const onSelectionChange = (value) => {
