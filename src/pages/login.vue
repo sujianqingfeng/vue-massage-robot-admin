@@ -6,7 +6,6 @@ const { fetchApi: fetchLogin, loading } = useRequest({
 })
 
 const formRef = ref(null)
-const remember = ref(false)
 const captchaSource = ref('')
 
 const form = ref({
@@ -101,13 +100,6 @@ fetchCaptcha()
             </div>
           </el-form-item>
 
-          <el-form-item>
-            <el-checkbox v-model="remember">
-              <span class="color-#999999 text-3.5 leading-4.1 font-400">
-                记住密码状态
-              </span>
-            </el-checkbox>
-          </el-form-item>
           <el-form-item>
             <el-button
               :loading="loading"
