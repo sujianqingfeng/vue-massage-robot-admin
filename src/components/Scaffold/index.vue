@@ -13,6 +13,10 @@ defineProps({
   padding: {
     type: String,
     default: '1.5rem'
+  },
+  back: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -27,19 +31,33 @@ const pagination = defineModel('pagination', {
 const onPaginationChange = () => {
   emit('paginationChange')
 }
+const slots = useSlots()
+
+const router = useRouter()
+const onBack = () => {
+  router.back()
+}
 </script>
 
 <template>
   <div :style="{ padding }" class="bg-white rounded-1 h-full flex flex-col">
-    <slot name="query"></slot>
+    <div v-if="slots.query" class="mb-6">
+      <slot name="query"></slot>
+    </div>
 
-    <div class="flex justify-between items-center">
+    <div
+      v-if="slots.title || title"
+      class="flex justify-between items-center mb-6"
+    >
       <slot name="title">
-        <div
-          v-if="title"
-          class="color-#1E1E1E text-4.5 leading-5.27 font-bold my-6"
-        >
-          {{ title }}
+        <div class="color-#1E1E1E flex justify-start items-center gap-2">
+          <button
+            v-if="back"
+            class="i-ri-arrow-left-circle-line text-6"
+            @click="onBack"
+          ></button>
+
+          <p class="text-4.5 leading-5.27 font-bold">{{ title }}</p>
         </div>
       </slot>
       <div>

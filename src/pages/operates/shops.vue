@@ -10,13 +10,12 @@ const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
 // TODO: 参数
-const { list, pagination,  loading, total, onQuery, } =
-  useRequestList({
-    apiFn: fetchShopListApi,
-    params: {
-      name: ''
-    }
-  })
+const { list, pagination, loading, total, onQuery } = useRequestList({
+  apiFn: fetchShopListApi,
+  params: {
+    name: ''
+  }
+})
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({
@@ -40,10 +39,6 @@ const onModifyShop = ({ id }) => {
 }
 
 const router = useRouter()
-const onBack = () => {
-  router.back()
-}
-
 const onGoToDeviceList = () => {
   router.push('/shops/devices')
 }
@@ -53,12 +48,10 @@ const onGoToDeviceList = () => {
   <Scaffold
     :pagination="pagination"
     :total="total"
+    title="门店列表"
+    back
     @pagination-change="onQuery"
   >
-    <template #title>
-      <BackTitle title="门店列表" @back="onBack" />
-    </template>
-
     <template #table="{ height }">
       <el-table
         v-loading="loading"

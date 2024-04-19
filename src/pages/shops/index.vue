@@ -107,11 +107,7 @@ const onGoToDeviceList = () => {
         </QueryItem>
 
         <QueryItem>
-          <el-input
-            v-model="form.address"
-            placeholder="地址"
-            maxlength="50"
-          />
+          <el-input v-model="form.address" placeholder="地址" maxlength="50" />
         </QueryItem>
       </Query>
     </template>
@@ -133,7 +129,7 @@ const onGoToDeviceList = () => {
         <el-table-column label="类型" prop="storeType" />
         <el-table-column label="运营商" prop="operatorName" />
         <el-table-column label="地址" prop="address" />
-        <el-table-column label="所有设备" width="100">
+        <el-table-column label="所有设备" width="110">
           <template #default="{ row }">
             <el-button link type="primary" @click="onGoToDeviceList(row)">
               查看设备列表

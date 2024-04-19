@@ -36,11 +36,6 @@ const { options: infos } = useTransformOptions({
   ]
 })
 
-const router = useRouter()
-const onBack = () => {
-  router.back()
-}
-
 fetchDeviceDetail(id)
 </script>
 
@@ -48,11 +43,10 @@ fetchDeviceDetail(id)
   <Scaffold
     :pagination="pagination"
     :total="total"
+    title="错误码记录"
+    back
     @pagination-change="onQuery"
   >
-    <template #title>
-      <BackTitle title="错误码记录" @back="onBack" />
-    </template>
     <template #operation>
       <div class="flex items-center gap-8 text-4">
         <div

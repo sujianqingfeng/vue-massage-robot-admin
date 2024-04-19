@@ -8,16 +8,15 @@ import {
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, loading, total, onQuery } =
-  useRequestList({
-    apiFn: fetchOperatorListApi,
-    params: {
-      principal: '',
-      cellPhone: '',
-      address: '',
-      name: ''
-    }
-  })
+const { list, pagination, loading, total, onQuery } = useRequestList({
+  apiFn: fetchOperatorListApi,
+  params: {
+    principal: '',
+    cellPhone: '',
+    address: '',
+    name: ''
+  }
+})
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({
@@ -41,7 +40,7 @@ const onAddVersion = () => {
 
 <template>
   <Scaffold
-    title="运营商管理"
+    title="软件版本管理"
     :pagination="pagination"
     :total="total"
     @pagination-change="onQuery"

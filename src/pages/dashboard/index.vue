@@ -18,7 +18,7 @@ import Shops from './components/Shops.vue'
         <Orders />
       </div>
     </div>
-    <div class="bg-white w-100 rounded-1 shrink-0">
+    <div class="bg-white w-100 rounded-1 shrink-0 h-full">
       <Shops />
     </div>
   </div>
