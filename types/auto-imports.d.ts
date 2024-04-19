@@ -249,6 +249,8 @@ declare global {
   const useStyleTag: typeof import('@vueuse/core')['useStyleTag']
   const useSupported: typeof import('@vueuse/core')['useSupported']
   const useSwipe: typeof import('@vueuse/core')['useSwipe']
+  const useTableColumnFormatter: typeof import('../src/composables/use-element-plus.js')['useTableColumnFormatter']
+  const useTableSelection: typeof import('../src/composables/use-element-plus.js')['useTableSelection']
   const useTemplateDialog: typeof import('../src/composables/use-dialog.js')['useTemplateDialog']
   const useTemplateRefsList: typeof import('@vueuse/core')['useTemplateRefsList']
   const useTextDirection: typeof import('@vueuse/core')['useTextDirection']

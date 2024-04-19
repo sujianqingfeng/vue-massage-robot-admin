@@ -302,6 +302,8 @@
     "setMapStoreSuffix": true,
     "storeToRefs": true,
     "useDisableDateAfterToday": true,
-    "useApiConfirm": true
+    "useApiConfirm": true,
+    "useTableColumnFormatter": true,
+    "useTableSelection": true
   }
 }

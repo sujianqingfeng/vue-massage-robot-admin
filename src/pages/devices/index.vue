@@ -12,7 +12,7 @@ const detailDrawerRef = ref(null)
 
 const zh = useZh()
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
-const { selections, onSelectionChange } = useElementPlusTable()
+const { selections, onSelectionChange } = useTableSelection()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 const { apiConfirm } = useApiConfirm()
 
