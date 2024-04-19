@@ -8,7 +8,11 @@
       <TheNav />
     </div>
     <div class="m-2 flex-1 overflow-auto">
-      <RouterView />
+      <RouterView v-slot="{ Component }">
+        <transtion name="fade">
+          <component :is="Component" />
+        </transtion>
+      </RouterView>
     </div>
   </div>
 </template>
