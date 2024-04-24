@@ -158,7 +158,7 @@ watch([day1, day2, period], () => {
     </div>
   </div>
 
-  <div class="h-full mt-4">
+  <div class="flex-1 pt-4">
     <div ref="eChartRef" class="w-full h-full"></div>
   </div>
 </template>
