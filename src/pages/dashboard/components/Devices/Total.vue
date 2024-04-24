@@ -1,11 +1,15 @@
 <script setup>
+import { fetchDeviceCountApi } from '~/api'
+
 const eChartRef = ref(null)
 
-onMounted(() => {
+const renderChart = (data) => {
+  const { total, online, fault, offline } = data
+
   eChartRef.value?.setOption({
     color: ['#26CCB9', '#F05D2F', '#2F93F0'],
     title: {
-      text: `111`,
+      text: total,
       subtext: '设备总数',
       top: '32%',
       left: 'center',
@@ -37,9 +41,13 @@ onMounted(() => {
       icon: 'circle',
       itemWidth: 5,
       itemHeight: 5,
-      // TODO: 数量
       formatter: function (name) {
-        return `{name|${name}} {value|fffff}`
+        const label = {
+          online: '在线设备',
+          fault: '故障设备',
+          offline: '离线设备'
+        }
+        return `{name|${label[name]}} {value|${data[name]}}`
       }
     },
     series: [
@@ -62,14 +70,24 @@ onMounted(() => {
           show: false
         },
         data: [
-          { value: 1048, name: 'Search' },
-          { value: 735, name: 'Direct' },
-          { value: 580, name: 'Email' }
+          { value: online, name: 'online' },
+          { value: fault, name: 'fault' },
+          { value: offline, name: 'offline' }
         ]
       }
     ]
   })
-})
+}
+
+const fetchDeviceCount = async () => {
+  const { error, data } = await fetchDeviceCountApi()
+  if (error) {
+    return
+  }
+  renderChart(data)
+}
+
+onMounted(fetchDeviceCount)
 </script>
 
 <template>

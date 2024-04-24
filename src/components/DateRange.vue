@@ -1,13 +1,13 @@
 <script setup>
 import dayjs from 'dayjs'
 
-const start = defineModel('start', { type: String,default:'' })
-const end = defineModel('end', { type: String,default:'' })
+const start = defineModel('start', { type: String, default: '' })
+const end = defineModel('end', { type: String, default: '' })
 
 const props = defineProps({
   valueFormat: {
     type: String,
-    default: 'YYYY-MM-DD HH:mm:ss'
+    default: 'YYYY-MM-DD'
   },
   format: {
     type: String,
@@ -37,7 +37,7 @@ const props = defineProps({
     type: String,
     default: 'daterange'
   },
-  withEndTiemOfDay: {
+  withEndTimeOfDay: {
     type: Boolean,
     default: true
   }
@@ -54,9 +54,13 @@ const dateModalValue = computed({
       return
     }
 
-    const isDetailTime = props.valueFormat.includes('HH:mm:ss') && props.withEndTiemOfDay
+    const isDetailTime =
+      props.valueFormat.includes('HH:mm:ss') && props.withEndTimeOfDay
+
     start.value = val[0]
-    end.value = isDetailTime  ? dayjs(val[1]).endOf('day').format(props.valueFormat) : val[1]
+    end.value = isDetailTime
+      ? dayjs(val[1]).endOf('day').format(props.valueFormat)
+      : val[1]
   }
 })
 

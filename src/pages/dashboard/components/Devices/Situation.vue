@@ -1,8 +1,10 @@
 <script setup>
-const v = ref(null)
+import { fetchDeviceFaultBarApi } from '~/api'
+import { useDashboardPeriod } from '~/pages/dashboard/use-dashboard'
+
 const eChartRef = ref(null)
 
-onMounted(() => {
+const renderChart = () => {
   eChartRef.value?.setOption({
     tooltip: {},
     color: ['#0083FF', '#04C7B2'],
@@ -30,7 +32,23 @@ onMounted(() => {
       }
     ]
   })
-})
+}
+
+const fetchDeviceFaultBar = async () => {
+  const params = transformPeriod()
+  const { error, data } = await fetchDeviceFaultBarApi(params)
+  console.log('🚀 ~ fetchDeviceFaultBar ~ data:', data)
+  if (error) {
+    return
+  }
+}
+
+const { PERIOD_OPTIONS, period, day1, day2, transformPeriod } =
+  useDashboardPeriod()
+
+onMounted(fetchDeviceFaultBar)
+
+watch([day1, day2, period], fetchDeviceFaultBar)
 </script>
 
 <template>
@@ -48,12 +66,14 @@ onMounted(() => {
 
     <div class="flex gap-2.5">
       <div class="w-60">
-        <DateRange />
+        <DateRange v-model:start="day1" v-model:end="day2" />
       </div>
-      <div class="w-18">
-        <el-select v-model="v" placeholder="Select">
-          <el-option key="item.value" label="今日" value="item.value" />
-        </el-select>
+      <div class="w-30">
+        <SelectWithOptions
+          v-model="period"
+          :options="PERIOD_OPTIONS"
+          clearable
+        />
       </div>
     </div>
   </div>

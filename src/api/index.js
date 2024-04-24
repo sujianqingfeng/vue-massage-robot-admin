@@ -116,6 +116,10 @@ export const fetchDeleteShopApi = (id) => requestDelete(`/store/${id}`)
 // 门店列表
 export const fetchShopAllApi = () => requestGet('/store/list')
 
+// 统计信息-门店总数与营业额排行
+export const fetchShopAmountApi = (params) =>
+  requestGet('/store/amount', params)
+
 // === 字典模块 ===
 
 // 获取字典数据列表
@@ -149,6 +153,14 @@ export const fetchEnableDeviceApi = (data) =>
 export const fetchDeviceFaultListApi = (params) =>
   requestGet('/equipment/fault', params)
 
+//   统计信息-设备统计
+export const fetchDeviceCountApi = (params) =>
+  requestGet('/equipment/count', params)
+
+// 统计信息-故障离线次数
+export const fetchDeviceFaultBarApi = (params) =>
+  requestGet('/equipment/faultBar', params)
+
 // === 订单管理模块 ===
 
 // 订单分页列表
@@ -156,6 +168,14 @@ export const fetchOrderListApi = (params) => requestGet('/order', params)
 
 // 订单详情
 export const fetchOrderDetailApi = (id) => requestGet(`/order/${id}`)
+
+// 统计信息-订单统计
+export const fetchOrderAmountApi = (params) =>
+  requestGet('/order/amount', params)
+
+// 统计信息-订单趋势
+export const fetchOrderTendencyLineApi = (params) =>
+  requestGet('/order/tendencyLine', params)
 
 // ===版本管理模块 ===
 

@@ -1,20 +1,15 @@
 <script setup>
-const allFeature = ref(false)
+const enableAll = ref(false)
 
-const features = ref([
-  {
-    name: 'feature1',
-    enable: false
-  },
-  {
-    name: 'feature2',
-    enable: false
-  },
-  {
-    name: 'feature3',
+const fns = Array.from({ length: 8 }, (_, i) => {
+  return {
+    no: `1.${i + 1}`,
     enable: false
   }
-])
+})
+
+const features = ref(fns)
+const ids = ref([])
 
 const onChange = (val) => {
   features.value.forEach((item) => {
@@ -22,11 +17,17 @@ const onChange = (val) => {
   })
 }
 
-const show = () => {
-  console.log('show')
+const show = ({ ids: _ids }) => {
+  ids.value = _ids
 }
 
-const onConfirm = async () => {}
+const onConfirm = async () => {
+  return {
+    ids: ids.value,
+    enableAll: enableAll.value,
+    functions: features.value
+  }
+}
 
 defineExpose({
   show,
@@ -38,7 +39,7 @@ defineExpose({
   <div class="device-feature">
     <div class="flex items-center gap-5">
       <span class="color-#333333 text-3.5 leading-5.5">整体使能</span>
-      <el-switch v-model="allFeature" @change="onChange" />
+      <el-switch v-model="enableAll" @change="onChange" />
       <span class="color-#666666 leading-4.1">
         （整体使能：点击后将开启关闭所有功能）
       </span>
@@ -50,7 +51,7 @@ defineExpose({
         :key="index"
         class="flex items-center gap-5"
       >
-        <span class="color-#333333 text-3.5 leading-5.5">{{ item.name }}</span>
+        <span class="color-#333333 text-3.5 leading-5.5">{{ item.no }}</span>
         <el-switch v-model="item.enable" />
         <span :class="{ 'color-#13ce66': item.enable }">
           {{ item.enable ? '开' : '关' }}

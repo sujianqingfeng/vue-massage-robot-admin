@@ -1,33 +1,40 @@
 <script setup>
+import { fetchOrderAmountApi } from '~/api'
+
 const items = ref([
   {
     icon: 'i-cm-total-amount',
     title: '总营业额（万元）',
-    value: '555.44',
-    single: '80'
+    value: 'total',
+    single: ''
   },
   {
     icon: 'i-cm-today-amount',
     title: '今日营业额（万元）',
-    value: '555.44',
-    single: '80'
+    value: 'day',
+    single: ''
   },
   {
     icon: 'i-cm-month-amount',
     title: '本月营业额（万元）',
-    value: '555.44'
+    value: 'month'
   },
   {
     icon: 'i-cm-quarter-amount',
     title: '本季营业额（万元）',
-    value: '555.44'
+    value: 'quarter'
   },
   {
     icon: 'i-cm-year-amount',
     title: '本年营业额（万元）',
-    value: '555.44'
+    value: 'year'
   }
 ])
+
+const { result } = useRequest({
+  apiFn: fetchOrderAmountApi,
+  autoFetch: true
+})
 </script>
 
 <template>
@@ -43,7 +50,7 @@ const items = ref([
       </div>
       <div class="flex mt-1 items-end">
         <div class="text-7 leading-8.2 color-#1E1E1E font-bold">
-          {{ item.value }}
+          {{ result[item.value] }}
         </div>
         <div
           v-if="item.single"

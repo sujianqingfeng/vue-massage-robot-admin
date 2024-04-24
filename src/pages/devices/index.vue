@@ -5,6 +5,7 @@ import {
   fetchAddOrModifyDeviceApi,
   fetchDeleteDeviceApi,
   fetchDeviceListApi,
+  fetchEnableDeviceApi,
   fetchUpgradeSoftwareApi
 } from '~/api'
 
@@ -30,9 +31,8 @@ const { list, pagination, loading, total, onQuery, onReset, form } =
       equipNo: '',
       storeName: '',
       eqState: ''
-    },
+    }
   })
-
 
 const router = useRouter()
 
@@ -137,11 +137,16 @@ const onModifyDevice = ({ id }) => {
   })
 }
 
-const onDeviceFeature = () => {
+const onDeviceFeature = ({ id }) => {
   showDialog({
     template: () => import('./components/DeviceFeatureTemplate.vue'),
     title: '设备使能',
-    width: '30rem'
+    showParams: { ids: [id] },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchEnableDeviceApi,
+      successMessage: '操作成功',
+      onSuccess: onQuery
+    })
   })
 }
 
@@ -149,7 +154,12 @@ const onBatchDeviceFeature = () => {
   showDialog({
     template: () => import('./components/DeviceFeatureTemplate.vue'),
     title: '批量设备使能',
-    width: '30rem'
+    showParams: { ids: getSelectionIds() },
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchEnableDeviceApi,
+      successMessage: '操作成功',
+      onSuccess: onQuery
+    })
   })
 }
 </script>

@@ -2,10 +2,10 @@
 const formRef = ref(null)
 const form = ref({
   ids: [],
-  equipNo: ''
+  domain: ''
 })
 const rules = {
-  equipNo: [{ required: true, message: '请输入机器编号', trigger: 'blur' }]
+  domain: [{ required: true, message: '请输入更新软件命令', trigger: 'blur' }]
 }
 
 const show = async ({ ids }) => {
@@ -26,9 +26,9 @@ defineExpose({
 
 <template>
   <el-form ref="formRef" :model="form" :rules="rules">
-    <el-form-item prop="equipNo">
+    <el-form-item prop="domain">
       <el-input
-        v-model="form.equipNo"
+        v-model="form.domain"
         type="textarea"
         maxlength="2000"
         rows="5"
