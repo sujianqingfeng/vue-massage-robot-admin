@@ -156,3 +156,16 @@ export const fetchOrderListApi = (params) => requestGet('/order', params)
 
 // 订单详情
 export const fetchOrderDetailApi = (id) => requestGet(`/order/${id}`)
+
+// ===版本管理模块 ===
+
+// 分页列表
+export const fetchVersionListApi = (params) => requestGet('/version', params)
+
+// 新增版本
+
+export const fetchAddVersionApi = (data) =>
+  requestPost('/version', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
+
+// 删除
+export const fetchDeleteVersionApi = (id) => requestDelete(`/version/${id}`)

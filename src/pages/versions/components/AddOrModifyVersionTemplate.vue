@@ -1,19 +1,15 @@
 <script setup>
 const formRef = ref(null)
 const form = ref({
-  principal: '',
-  cellPhone: ''
+  eqVersion: '',
+  preVersion: ''
 })
 const rules = {
-  name: [{ required: true, message: '请输入运营商名称', trigger: 'blur' }],
-  principal: [
-    { required: true, message: '请输入运营商负责人', trigger: 'blur' }
-  ]
+  eqVersion: [{ required: true, message: '请输入最新版本', trigger: 'blur' }],
+  preVersion: [{ required: true, message: '请输入上一版本', trigger: 'blur' }]
 }
 
-const show = async ({ id }) => {
-  console.log('show')
-}
+const show = async () => {}
 
 const onConfirm = async () => {
   await formRef.value.validate()
@@ -35,12 +31,12 @@ defineExpose({
     label-position="left"
     label-width="7rem"
   >
-    <el-form-item label="最新版本" prop="name">
-      <el-input v-model="form.name" placeholder="请输入最新版本" />
+    <el-form-item label="最新版本" prop="eqVersion">
+      <el-input v-model="form.eqVersion" placeholder="请输入最新版本" />
     </el-form-item>
 
-    <el-form-item label="上一版本" prop="cellPhone">
-      <el-input v-model="form.cellPhone" placeholder="请输入上一版本" />
+    <el-form-item label="上一版本" prop="preVersion">
+      <el-input v-model="form.preVersion" placeholder="请输入上一版本" />
     </el-form-item>
   </el-form>
 </template>

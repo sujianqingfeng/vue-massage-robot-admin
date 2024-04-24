@@ -1,15 +1,15 @@
 <script setup>
 import {
-  fetchAddOrModifyOperatorApi,
-  fetchDeleteOperatorDApi,
-  fetchOperatorListApi
+  fetchAddVersionApi,
+  fetchDeleteVersionApi,
+  fetchVersionListApi
 } from '~/api'
 
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
 const { list, pagination, loading, total, onQuery } = useRequestList({
-  apiFn: fetchOperatorListApi,
+  apiFn: fetchVersionListApi,
   params: {
     principal: '',
     cellPhone: '',
@@ -20,7 +20,7 @@ const { list, pagination, loading, total, onQuery } = useRequestList({
 
 const onDelete = ({ id }) => {
   apiDeleteConfirm({
-    apiFn: () => fetchDeleteOperatorDApi(id),
+    apiFn: () => fetchDeleteVersionApi(id),
     onSuccess: onQuery
   })
 }
@@ -30,7 +30,7 @@ const onAddVersion = () => {
     template: () => import('./components/AddOrModifyVersionTemplate.vue'),
     title: '新增版本',
     onConfirm: createDialogTemplateApiConfirm({
-      apiFn: fetchAddOrModifyOperatorApi,
+      apiFn: fetchAddVersionApi,
       successMessage: '新增成功',
       onSuccess: onQuery
     })
@@ -56,9 +56,9 @@ const onAddVersion = () => {
         :data="list"
         size="small"
       >
-        <el-table-column label="最新版本" prop="name" />
-        <el-table-column label="上一版本" prop="principal" />
-        <el-table-column label="发布时间" prop="cellPhone" />
+        <el-table-column label="最新版本" prop="eqVersion" />
+        <el-table-column label="上一版本" prop="preVersion" />
+        <el-table-column label="发布时间" prop="createTime" />
         <el-table-column label="操作">
           <template #default="{ row }">
             <el-button link type="danger" @click="onDelete(row)">
