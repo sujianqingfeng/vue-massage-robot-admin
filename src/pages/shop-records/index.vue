@@ -1,35 +1,39 @@
 <script setup>
-import { fetchOrderListApi } from '~/api'
+import { fetchOrderListApi, fetchShopAllApi } from '~/api'
 import DetailDrawer from '~/pages/orders/components/DetailDrawer.vue'
 
 const detailDrawerRef = ref(null)
-
-const { list, pagination, loading, total, onQuery, form } =
-  useRequestList({
-    apiFn: fetchOrderListApi,
-    params: {
-      orderNo: ''
-    },
-  })
-
 const currentShopIndex = ref(0)
 
-const shops = ref([
-  {
-    name: '店铺名称'
-  },
-  {
-    name: '店铺名称'
+const { result: shops } = useRequest({
+  apiFn: fetchShopAllApi,
+  autoFetch: true,
+  defaultResult: []
+})
+
+const { list, pagination, loading, total, onQuery, form } = useRequestList({
+  apiFn: fetchOrderListApi,
+  autoFetch: false,
+  params: {
+    storeNo: ''
   }
-])
+})
 
 const onShopItem = (index) => {
   currentShopIndex.value = index
+  form.value.storeNo = shops.value[index].value
+  onQuery()
 }
 
 const onGoToDetail = ({ id }) => {
   detailDrawerRef.value.show({ id })
 }
+
+watch(shops, () => {
+  if (shops.value.length) {
+    onShopItem(0)
+  }
+})
 </script>
 
 <template>
@@ -47,7 +51,7 @@ const onGoToDetail = ({ id }) => {
           class="text-3 font-bold p-2 cursor-pointer"
           @click="onShopItem(index)"
         >
-          {{ shop.name }}
+          {{ shop.label }}
         </div>
       </div>
       <div class="flex-auto flex flex-col p-2">
