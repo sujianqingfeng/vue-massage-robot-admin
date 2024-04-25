@@ -44,6 +44,10 @@ export const fetchDeleteUserApi = (data) =>
 // 查询用户表单数据
 export const fetchUserDetailApi = (id) => requestGet(`/auth/admin/${id}`)
 
+// 修改密码
+export const fetchModifyPasswordApi = (data) =>
+  requestPut('/auth/admin/password', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
+
 // === 系统角色模块 ===
 
 // 分配权限给角色

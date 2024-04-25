@@ -9,11 +9,11 @@ const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-// TODO: 参数
+const route = useRoute()
 const { list, pagination, loading, total, onQuery } = useRequestList({
   apiFn: fetchShopListApi,
   params: {
-    name: ''
+    operatorName: decodeURIComponent(route.query.name)
   }
 })
 

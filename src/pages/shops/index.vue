@@ -56,8 +56,8 @@ const onModifyShop = ({ id }) => {
 }
 
 const router = useRouter()
-const onGoToDeviceList = () => {
-  router.push('/shops/devices')
+const onGoToDeviceList = ({ name }) => {
+  router.push(`/shops/devices?name=${encodeURIComponent(name)}`)
 }
 </script>
 

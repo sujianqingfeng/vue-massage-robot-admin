@@ -1,20 +1,20 @@
 <script setup>
 const formRef = ref(null)
 const form = ref({
-  name: '',
-  age: ''
+  oldPwd: '',
+  password: ''
 })
 const rules = {
-  name: [{ required: true, message: '请输入机器编号', trigger: 'blur' }],
-  age: [{ required: true, message: '请选择所属门店', trigger: 'blur' }]
+  oldPwd: [{ required: true, message: '请输入原密码', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入新密码', trigger: 'blur' }]
 }
 
-const show = () => {
-  console.log('show')
-}
+const show = () => {}
 
 const onConfirm = async () => {
   await formRef.value.validate()
+
+  return form.value
 }
 
 defineExpose({
@@ -25,12 +25,12 @@ defineExpose({
 
 <template>
   <el-form ref="formRef" :model="form" :rules="rules">
-    <el-form-item label="原密码" prop="name">
-      <el-input v-model="form.name" placeholder="请输入原密码" />
+    <el-form-item label="原密码" prop="oldPwd">
+      <el-input v-model="form.oldPwd" placeholder="请输入原密码" />
     </el-form-item>
 
-    <el-form-item label="新密码" prop="name">
-      <el-input v-model="form.name" placeholder="请输入新密码" />
+    <el-form-item label="新密码" prop="password">
+      <el-input v-model="form.password" placeholder="请输入新密码" />
     </el-form-item>
   </el-form>
 </template>

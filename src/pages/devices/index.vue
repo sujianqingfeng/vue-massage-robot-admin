@@ -11,11 +11,9 @@ import {
 
 const detailDrawerRef = ref(null)
 
-const zh = useZh()
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { selections, onSelectionChange } = useTableSelection()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
-const { apiConfirm } = useApiConfirm()
 
 const { mapLabel: mapStatusLabel, getOptions: getStatusOptions } = useOptions({
   ON: '在线',
@@ -51,24 +49,6 @@ const onDelete = ({ id }) => {
   })
 }
 
-const onDownload = () => {
-  console.log(ElMessage.warning('暂无实现'))
-}
-
-const onImportDevice = () => {
-  console.log(ElMessage.warning('暂无实现'))
-}
-
-const onBatchDownload = () => {
-  const length = selections.value.length
-  ElMessageBox.confirm('确定下载二维码?', '', {
-    ...zh.popconfirm,
-    type: 'warning'
-  }).then(() => {
-    ElMessage.warning(`已选择${length}个`)
-  })
-}
-
 const onUpdateSoftware = async ({ id }) => {
   showDialog({
     template: () => import('./components/UpdateSoftwareTemplate.vue'),
@@ -101,15 +81,6 @@ const onDetail = ({ id }) => {
 
 const onGoToRecord = ({ id }) => {
   router.push(`/devices/error-code-record/${id}`)
-}
-
-const onDownloadCenter = () => {
-  showDialog({
-    template: () => import('./components/DownloadCenterTemplate.vue'),
-    title: '下载中心',
-    width: '50rem',
-    showFooter: false
-  })
 }
 
 const onAddDevice = () => {
@@ -193,11 +164,8 @@ const onBatchDeviceFeature = () => {
 
     <template #operation>
       <el-button @click="onAddDevice">新增设备</el-button>
-      <el-button @click="onDownloadCenter">下载中心</el-button>
-      <el-button @click="onBatchDownload">下载二维码</el-button>
       <el-button @click="onBatchUpdateSoftware">批量更新软件</el-button>
       <el-button @click="onBatchDeviceFeature">批量设备使能</el-button>
-      <el-button @click="onImportDevice">EXCEL导入设备</el-button>
     </template>
 
     <template #table="{ height, width }">
@@ -239,16 +207,13 @@ const onBatchDeviceFeature = () => {
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="330">
+        <el-table-column label="操作" width="280">
           <template #default="{ row }">
             <el-button link type="primary" @click="onDetail(row)">
               查看
             </el-button>
             <el-button link type="primary" @click="onModifyDevice(row)">
               编辑
-            </el-button>
-            <el-button link type="primary" @click="onDownload(row)">
-              下载二维码
             </el-button>
             <el-button link type="primary" @click="onGoToRecord(row)">
               错误码记录

@@ -4,7 +4,7 @@ import { useDashboardPeriod } from '~/pages/dashboard/use-dashboard'
 
 const eChartRef = ref(null)
 
-const renderChart = () => {
+const renderChart = ({ xaxis, offlineNum, faultNum }) => {
   eChartRef.value?.setOption({
     tooltip: {},
     color: ['#0083FF', '#04C7B2'],
@@ -16,18 +16,18 @@ const renderChart = () => {
     },
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: xaxis
     },
     yAxis: {
       type: 'value'
     },
     series: [
       {
-        data: [120, 200, 150, 80, 70, 110, 130],
+        data: offlineNum,
         type: 'bar'
       },
       {
-        data: [120, 200, 150, 80, 70, 110, 130],
+        data: faultNum,
         type: 'bar'
       }
     ]
@@ -37,10 +37,17 @@ const renderChart = () => {
 const fetchDeviceFaultBar = async () => {
   const params = transformPeriod()
   const { error, data } = await fetchDeviceFaultBarApi(params)
-  console.log('🚀 ~ fetchDeviceFaultBar ~ data:', data)
   if (error) {
     return
   }
+
+  const { xaxis = [], offlineNum = [], faultNum = [] } = data || {}
+
+  renderChart({
+    xaxis,
+    offlineNum,
+    faultNum
+  })
 }
 
 const { PERIOD_OPTIONS, period, day1, day2, transformPeriod } =

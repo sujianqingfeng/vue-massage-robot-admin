@@ -8,7 +8,7 @@ import {
 const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const { apiDeleteConfirm } = useApiDeleteConfirm()
 
-const { list, pagination, loading, total, onQuery, onReset, form} =
+const { list, pagination, loading, total, onQuery, onReset, form } =
   useRequestList({
     apiFn: fetchOperatorListApi,
     form: {
@@ -52,8 +52,8 @@ const onModifyOperate = ({ id }) => {
 }
 
 const router = useRouter()
-const goToShops = () => {
-  router.push('/operates/shops')
+const goToShops = ({ name }) => {
+  router.push(`/operates/shops?name=${encodeURIComponent(name)}`)
 }
 </script>
 

@@ -4,19 +4,21 @@ import { TOKEN_KEY } from '~/constants'
 import { useUserStore } from '~/stores/user'
 
 const router = useRouter()
-const { showDialog } = useTemplateDialog()
+const { showDialog, createDialogTemplateApiConfirm } = useTemplateDialog()
 const token = useStorage(TOKEN_KEY, '')
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
 const onChangePassword = () => {
-  console.log('修改密码')
-
   showDialog({
     template: () => import('./ChangePasswordTemplate.vue'),
     title: '修改密码',
-    width: '30rem'
+    onConfirm: createDialogTemplateApiConfirm({
+      apiFn: fetchUpgradeSoftwareApi,
+      successMessage: '修改成功',
+      onSuccess: onLogout
+    })
   })
 }
 
