@@ -59,7 +59,8 @@ const redirectInterceptor = createInnerResponseInterceptor([
   (error) => {
     if (error.response?.data?.code === '4311') {
       localStorage.removeItem(TOKEN_KEY)
-      const url = `${location.protocol}//${location.host}/#/login`
+
+      const url = `${location.protocol}//${location.host}${import.meta.env.BASE_URL}/#/login`
       window.location.href = url
     }
     return Promise.reject(error)
