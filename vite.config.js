@@ -9,6 +9,7 @@ import { defineConfig } from 'vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
+  base: '/linghu',
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`
