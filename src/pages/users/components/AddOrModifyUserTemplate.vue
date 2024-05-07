@@ -93,6 +93,7 @@ defineExpose({
     <el-form-item label="所属单位" prop="depart">
       <el-tree-select
         v-model="form.depart"
+        check-strictly
         placeholder="请选择所属单位"
         :data="departTreeOptions"
         :render-after-expand="false"
