@@ -43,7 +43,6 @@ const { result: roleOptions } = useRequest({
 const show = async ({ id } = {}) => {
   if (id) {
     await fetchUserDetail(id)
-    console.log('----', detail.value)
     form.value = { ...detail.value }
   }
 }
@@ -52,7 +51,7 @@ const onConfirm = async () => {
   await formRef.value.validate()
   const data = { ...form.value }
   data.status = +data.status
-  data.depart = data.depart.join(',')
+  // data.depart = data.depart.join(',')
   return data
 }
 
