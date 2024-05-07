@@ -43,7 +43,7 @@ const { result: roleOptions } = useRequest({
 const show = async ({ id } = {}) => {
   if (id) {
     await fetchUserDetail(id)
-    form.value = { ...detail.value }
+    form.value = { ...detail.value, status: detail.value.status.code }
   }
 }
 
@@ -109,7 +109,7 @@ defineExpose({
       <SelectWithOptions
         v-model="form.status"
         placeholder="请选择状态"
-        :options="getUserStatusOptions()"
+        :options="getUserStatusOptions(true)"
       />
     </el-form-item>
   </el-form>
