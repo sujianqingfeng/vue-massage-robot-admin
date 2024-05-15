@@ -1,4 +1,6 @@
 <script setup>
+import { fetchDeviceFunctionsApi } from '~/api'
+
 const enableAll = ref(false)
 
 const fns = Array.from({ length: 8 }, (_, i) => {
@@ -11,6 +13,18 @@ const fns = Array.from({ length: 8 }, (_, i) => {
 const features = ref(fns)
 const ids = ref([])
 
+const fetchDeviceFunctions = async (id) => {
+  const { error, data } = await fetchDeviceFunctionsApi(id)
+  if (error) {
+    return
+  }
+  const { enableAll: _enableAll = false, functions = [] } = data || {}
+  enableAll.value = _enableAll
+  if (functions.length > 0) {
+    features.value = functions
+  }
+}
+
 const onChange = (val) => {
   features.value.forEach((item) => {
     item.enable = val
@@ -19,7 +33,19 @@ const onChange = (val) => {
 
 const show = ({ ids: _ids }) => {
   ids.value = _ids
+  if (_ids.length === 1) {
+    fetchDeviceFunctions(_ids[0])
+  }
 }
+
+watch(
+  features,
+  (val) => {
+    const enable = val.every((item) => item.enable)
+    enableAll.value = enable
+  },
+  { deep: true }
+)
 
 const onConfirm = async () => {
   return {

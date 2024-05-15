@@ -153,6 +153,10 @@ export const fetchUpgradeSoftwareApi = (data) =>
 export const fetchEnableDeviceApi = (data) =>
   requestPost('/equipment/enable', data, JSON_CONTENT_TYPE_HEADER_OPTIONS)
 
+// 获取设备使能
+export const fetchDeviceFunctionsApi = (id) =>
+  requestGet(`/equipment/enable/${id}`)
+
 // 设备错误码记录
 export const fetchDeviceFaultListApi = (params) =>
   requestGet('/equipment/fault', params)
